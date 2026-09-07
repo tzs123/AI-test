@@ -1,0 +1,1 @@
+-- Optional migration placeholder; upstream release has no separate stress-dispatch migration.

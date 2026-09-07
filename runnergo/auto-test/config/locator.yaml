@@ -1,0 +1,4 @@
+login_page:
+  username: "#username"
+  password: "#password"
+  login_btn: "#login"

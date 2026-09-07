@@ -1,0 +1,3 @@
+# 预发环境配置（由 utils/yaml_loader.load_config 读取，ENV=staging 时生效）
+base_url: http://172.16.0.89:9527
+timeout: 30

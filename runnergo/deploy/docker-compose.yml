@@ -1,0 +1,64 @@
+services:
+  prometheus:
+    image: prom/prometheus:latest
+    restart: unless-stopped
+    command:
+      - --config.file=/etc/prometheus/prometheus.yml
+      - --storage.tsdb.path=/prometheus
+      - --web.enable-lifecycle
+    volumes:
+      - ./prometheus:/etc/prometheus:ro
+      - prometheus-data:/prometheus
+    ports: ["9090:9090"]
+    networks: [runnergo]
+
+  grafana:
+    image: grafana/grafana:latest
+    restart: unless-stopped
+    environment:
+      GF_RENDERING_SERVER_URL: http://grafana-image-renderer:8081/render
+      GF_RENDERING_CALLBACK_URL: http://grafana:3000/
+      GF_RENDERING_RENDERER_TOKEN: runnergo-local-renderer-token
+    volumes:
+      - grafana-data:/var/lib/grafana
+      - ./grafana/provisioning:/etc/grafana/provisioning:ro
+      - ./grafana/dashboards:/var/lib/grafana/dashboards:ro
+    ports: ["3000:3000"]
+    networks: [runnergo]
+
+  node-exporter:
+    image: prom/node-exporter:latest
+    restart: unless-stopped
+    command: ["--path.rootfs=/host"]
+    volumes: ["/:/host:ro,rslave"]
+    ports: ["9100:9100"]
+    networks: [runnergo]
+
+  redis-exporter:
+    image: oliver006/redis_exporter:latest
+    restart: unless-stopped
+    environment:
+      REDIS_ADDR: redis://redis-db:6379
+      REDIS_PASSWORD: mypassword
+    ports: ["9121:9121"]
+    networks: [runnergo]
+
+  mysql-exporter:
+    image: prom/mysqld-exporter:latest
+    restart: unless-stopped
+    command:
+      - --mysqld.address=mysql-db:3306
+      - --config.my-cnf=/etc/mysql-exporter.my.cnf
+    volumes:
+      - ./mysql-exporter.my.cnf:/etc/mysql-exporter.my.cnf:ro
+    ports: ["9104:9104"]
+    networks: [runnergo]
+
+networks:
+  runnergo:
+    name: runnergo_apipost_net
+    external: true
+
+volumes:
+  prometheus-data:
+  grafana-data:

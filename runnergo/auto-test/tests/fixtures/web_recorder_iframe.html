@@ -1,0 +1,10 @@
+<!doctype html>
+<html lang="zh-CN">
+<head><meta charset="utf-8"><title>Iframe Fixture</title></head>
+<body style="font-family:sans-serif;padding:18px">
+  <h2>iframe 业务区</h2>
+  <label>iframe 输入框<input id="frame-input" name="frame_input" data-testid="frame-input" placeholder="iframe 内容" style="padding:8px"></label>
+  <button id="frame-submit" data-testid="frame-submit" style="padding:9px" onclick="document.getElementById('frame-result').textContent='iframe:'+document.getElementById('frame-input').value">提交 iframe</button>
+  <p id="frame-result" role="status"></p>
+</body>
+</html>

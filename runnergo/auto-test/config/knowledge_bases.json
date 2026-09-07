@@ -1,0 +1,53 @@
+{
+  "需求模型库": {
+    "path": "/Users/tanzsongsen/Documents",
+    "display_path": "/Users/tanzsongsen/Documents",
+    "session_id": "kb_requirement",
+    "extensions": [
+      ".csv",
+      ".doc",
+      ".docx",
+      ".json",
+      ".markdown",
+      ".md",
+      ".pdf",
+      ".txt",
+      ".xls",
+      ".xlsm",
+      ".xlsx",
+      ".xmind",
+      ".yaml",
+      ".yml"
+    ],
+    "subdirs": null
+  },
+  "风险规则库": {
+    "path": "/Users/tanzsongsen/Music/风险规则库.docx",
+    "display_path": "/Users/tanzsongsen/Music/风险规则库.docx",
+    "session_id": "kb_risk",
+    "extensions": [
+      ".csv",
+      ".doc",
+      ".docx",
+      ".json",
+      ".markdown",
+      ".md",
+      ".pdf",
+      ".txt",
+      ".xls",
+      ".xlsm",
+      ".xlsx",
+      ".xmind",
+      ".yaml",
+      ".yml"
+    ],
+    "subdirs": null
+  },
+  "用例库": {
+    "path": "/app/cases",
+    "display_path": "/Users/tanzsongsen/RunnerGo/runnergo/auto-test/cases",
+    "session_id": "kb_testcase",
+    "extensions": [],
+    "subdirs": null
+  }
+}

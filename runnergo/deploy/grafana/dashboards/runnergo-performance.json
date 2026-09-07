@@ -1,0 +1,148 @@
+{
+  "uid": "runnergo-performance",
+  "title": "RunnerGo Performance",
+  "description": "Local RunnerGo performance and service health metrics.",
+  "tags": ["runnergo", "performance"],
+  "timezone": "browser",
+  "schemaVersion": 39,
+  "version": 1,
+  "refresh": "15s",
+  "time": {
+    "from": "now-1h",
+    "to": "now"
+  },
+  "editable": true,
+  "graphTooltip": 1,
+  "fiscalYearStartMonth": 0,
+  "links": [],
+  "templating": {
+    "list": []
+  },
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": {
+          "type": "grafana",
+          "uid": "-- Grafana --"
+        },
+        "enable": true,
+        "hide": true,
+        "iconColor": "#5794F2",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
+  },
+  "panels": [
+    {
+      "id": 1,
+      "type": "stat",
+      "title": "Targets Up",
+      "description": "Number of Prometheus scrape targets currently reporting up.",
+      "gridPos": {"h": 4, "w": 6, "x": 0, "y": 0},
+      "fieldConfig": {
+        "defaults": {
+          "color": {"mode": "thresholds"},
+          "thresholds": {"mode": "absolute", "steps": [{"color": "red", "value": null}, {"color": "green", "value": 1}]},
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "options": {"reduceOptions": {"calcs": ["lastNotNull"], "fields": "", "values": false}, "orientation": "auto", "textMode": "auto", "colorMode": "value"},
+      "targets": [{"expr": "sum(up)", "refId": "A"}]
+    },
+    {
+      "id": 2,
+      "type": "timeseries",
+      "title": "Target Availability",
+      "description": "Scrape availability by target.",
+      "gridPos": {"h": 8, "w": 12, "x": 6, "y": 0},
+      "fieldConfig": {
+        "defaults": {"color": {"mode": "palette-classic"}, "min": 0, "max": 1, "unit": "short"},
+        "overrides": []
+      },
+      "options": {"legend": {"displayMode": "list", "placement": "bottom"}, "tooltip": {"mode": "multi", "sort": "desc"}}
+      ,"targets": [{"expr": "up", "legendFormat": "{{job}} / {{instance}}", "refId": "A"}]
+    },
+    {
+      "id": 3,
+      "type": "timeseries",
+      "title": "Node CPU Usage",
+      "description": "Approximate CPU utilization from node-exporter.",
+      "gridPos": {"h": 8, "w": 12, "x": 0, "y": 8},
+      "fieldConfig": {
+        "defaults": {"color": {"mode": "palette-classic"}, "unit": "percent", "min": 0, "max": 100},
+        "overrides": []
+      },
+      "options": {"legend": {"displayMode": "list", "placement": "bottom"}, "tooltip": {"mode": "multi", "sort": "desc"}},
+      "targets": [{"expr": "100 - (avg by (instance) (rate(node_cpu_seconds_total{mode=\"idle\"}[5m])) * 100)", "legendFormat": "{{instance}}", "refId": "A"}]
+    },
+    {
+      "id": 4,
+      "type": "timeseries",
+      "title": "Node Memory Usage",
+      "description": "Approximate memory utilization from node-exporter.",
+      "gridPos": {"h": 8, "w": 12, "x": 12, "y": 8},
+      "fieldConfig": {
+        "defaults": {"color": {"mode": "palette-classic"}, "unit": "percent", "min": 0, "max": 100},
+        "overrides": []
+      },
+      "options": {"legend": {"displayMode": "list", "placement": "bottom"}, "tooltip": {"mode": "multi", "sort": "desc"}},
+      "targets": [{"expr": "(1 - (node_memory_MemAvailable_bytes / node_memory_MemTotal_bytes)) * 100", "legendFormat": "{{instance}}", "refId": "A"}]
+    },
+    {
+      "id": 5,
+      "type": "timeseries",
+      "title": "MySQL Queries Per Second",
+      "description": "Query throughput collected by mysqld-exporter.",
+      "gridPos": {"h": 8, "w": 12, "x": 0, "y": 16},
+      "fieldConfig": {
+        "defaults": {"color": {"mode": "palette-classic"}, "unit": "reqps"},
+        "overrides": []
+      },
+      "options": {"legend": {"displayMode": "list", "placement": "bottom"}, "tooltip": {"mode": "multi", "sort": "desc"}},
+      "targets": [{"expr": "rate(mysql_global_status_queries[5m])", "legendFormat": "{{instance}}", "refId": "A"}]
+    },
+    {
+      "id": 6,
+      "type": "timeseries",
+      "title": "MySQL Connections",
+      "description": "Current and maximum MySQL connections.",
+      "gridPos": {"h": 8, "w": 12, "x": 12, "y": 16},
+      "fieldConfig": {
+        "defaults": {"color": {"mode": "palette-classic"}, "unit": "short"},
+        "overrides": []
+      },
+      "options": {"legend": {"displayMode": "list", "placement": "bottom"}, "tooltip": {"mode": "multi", "sort": "desc"}},
+      "targets": [
+        {"expr": "mysql_global_status_threads_connected", "legendFormat": "connected", "refId": "A"},
+        {"expr": "mysql_global_variables_max_connections", "legendFormat": "max", "refId": "B"}
+      ]
+    },
+    {
+      "id": 7,
+      "type": "timeseries",
+      "title": "MySQL Slow Queries",
+      "description": "Slow query counter rate from mysqld-exporter.",
+      "gridPos": {"h": 8, "w": 12, "x": 0, "y": 24},
+      "fieldConfig": {
+        "defaults": {"color": {"mode": "palette-classic"}, "unit": "reqps"},
+        "overrides": []
+      },
+      "options": {"legend": {"displayMode": "list", "placement": "bottom"}, "tooltip": {"mode": "multi", "sort": "desc"}},
+      "targets": [{"expr": "rate(mysql_global_status_slow_queries[5m])", "legendFormat": "{{instance}}", "refId": "A"}]
+    },
+    {
+      "id": 8,
+      "type": "text",
+      "title": "Dashboard Notes",
+      "gridPos": {"h": 6, "w": 12, "x": 12, "y": 24},
+      "options": {"mode": "markdown", "content": "### RunnerGo performance monitoring\n\nThis dashboard reads the local Prometheus datasource. Report-specific TPS, latency, SLA, and request statistics are available in the Performance Analysis tab after selecting a preserved report ID. Resource panels show `未采集` in that tab until the tested service exposes the matching exporter metrics."}
+    }
+  ],
+  "datasource": {
+    "type": "prometheus",
+    "uid": "PBFA97CFB590B2093"
+  }
+}

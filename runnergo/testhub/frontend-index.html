@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="theme-color" content="#5267ff" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>AI测试平台</title>
+    <script>
+      // A project opened from the management console should land on the
+      // restored API module inside the TestHub shell, not the old 9997 host.
+      const isProjectEntry = window.location.pathname === '/' || window.location.pathname === '/testhub/' || window.location.pathname === '/testhub/index.html'
+      if (window.top === window.self && isProjectEntry) {
+        window.location.replace('/testhub/legacy-api.html')
+      }
+    </script>
+    <script type="module" crossorigin src="/testhub/assets/index-BB5TNWkr.js"></script>
+    <script defer src="/testhub/module-nav.js?v=5"></script>
+    <script defer src="/testhub/sql-console/business-rules-inject.js?v=5"></script>
+    <script defer src="/testhub/sql-console/workflow-export-inject.js?v=8"></script>
+    <link rel="stylesheet" crossorigin href="/testhub/assets/index-DQ0wkc3j.css" />
+  </head>
+  <body>
+    <div id="app"></div>
+  </body>
+</html>

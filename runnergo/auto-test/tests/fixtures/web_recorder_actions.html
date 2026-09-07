@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <title>Web Recorder Action Fixture</title>
+  <style>
+    body { font-family: sans-serif; padding: 24px; }
+    .row { display: flex; gap: 24px; align-items: center; margin: 18px 0; }
+    #drag-source { padding: 18px; background: #dbeafe; border: 1px solid #2563eb; cursor: grab; }
+    #drop-target { width: 220px; min-height: 70px; padding: 16px; border: 2px dashed #16a34a; }
+    .spacer { height: 1000px; background: linear-gradient(#fff, #f1f5f9); }
+    #bottom-marker { padding: 20px; background: #fef3c7; }
+  </style>
+</head>
+<body>
+  <h1>录制动作验证</h1>
+  <button id="double-button" data-testid="double-button">双击按钮</button>
+  <input id="key-input" data-testid="key-input" aria-label="按键输入框" placeholder="按 Enter">
+  <div class="row">
+    <div id="drag-source" data-testid="drag-source" draggable="true">拖拽源</div>
+    <div id="drop-target" data-testid="drop-target">拖到这里</div>
+  </div>
+  <p id="result" role="status">等待操作</p>
+  <div class="spacer"></div>
+  <div id="bottom-marker" data-testid="bottom-marker">已滚动到底部</div>
+  <script>
+    const result = document.getElementById('result');
+    document.getElementById('double-button').addEventListener('dblclick', () => {
+      result.textContent = '双击成功';
+    });
+    document.getElementById('key-input').addEventListener('keydown', event => {
+      if (event.key === 'Enter') result.textContent = '按键成功';
+    });
+    document.getElementById('drag-source').addEventListener('dragstart', event => {
+      event.dataTransfer.setData('text/plain', 'drag-success');
+    });
+    const target = document.getElementById('drop-target');
+    target.addEventListener('dragover', event => event.preventDefault());
+    target.addEventListener('drop', event => {
+      event.preventDefault();
+      if (event.dataTransfer.getData('text/plain') === 'drag-success') {
+        target.textContent = '拖拽成功';
+        result.textContent = '拖拽成功';
+      }
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,136 @@
+{
+  "string": {
+    "empty": {
+      "value": "",
+      "label": "空字符串"
+    },
+    "null": {
+      "value": null,
+      "label": "NULL"
+    },
+    "max_length": {
+      "value": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "label": "最大长度(256)"
+    },
+    "over_length": {
+      "value": "xaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "label": "超长(1024)"
+    },
+    "special_chars": {
+      "value": "!@#$%^&*()_+-=[]{};:'\",.<>/?\\|`~ ",
+      "label": "特殊字符"
+    },
+    "unicode": {
+      "value": "中文😀测试数据",
+      "label": "Unicode/emoji"
+    },
+    "whitespace": {
+      "value": "   ",
+      "label": "纯空白"
+    }
+  },
+  "number": {
+    "negative": {
+      "value": -1,
+      "label": "负数"
+    },
+    "zero": {
+      "value": 0,
+      "label": "0"
+    },
+    "max_value": {
+      "value": 2147483647,
+      "label": "最大值(32位)"
+    },
+    "overflow": {
+      "value": 99999999999999999999,
+      "label": "超过最大值"
+    },
+    "decimal": {
+      "value": 1.5,
+      "label": "小数"
+    }
+  },
+  "integer": {
+    "negative": {
+      "value": -1,
+      "label": "负数"
+    },
+    "zero": {
+      "value": 0,
+      "label": "0"
+    },
+    "max_value": {
+      "value": 2147483647,
+      "label": "最大值(32位)"
+    },
+    "overflow": {
+      "value": 92233720368547758080,
+      "label": "超过最大值"
+    },
+    "decimal": {
+      "value": 3.14,
+      "label": "小数"
+    }
+  },
+  "boolean": {
+    "invalid": {
+      "value": "not_a_bool",
+      "label": "非布尔值"
+    },
+    "null": {
+      "value": null,
+      "label": "NULL"
+    },
+    "string_true": {
+      "value": "true",
+      "label": "字符串true"
+    }
+  },
+  "array": {
+    "empty": {
+      "value": [],
+      "label": "空数组"
+    },
+    "null": {
+      "value": null,
+      "label": "NULL"
+    },
+    "single": {
+      "value": [
+        "item"
+      ],
+      "label": "单元素"
+    },
+    "huge": {
+      "value": [
+        "item1",
+        "item2",
+        "item3"
+      ],
+      "label": "多元素"
+    }
+  },
+  "date": {
+    "invalid": {
+      "value": "2024-13-40",
+      "label": "非法日期"
+    },
+    "past": {
+      "value": "1999-01-01",
+      "label": "远过去"
+    },
+    "future": {
+      "value": "2999-12-31",
+      "label": "远未来"
+    },
+    "null": {
+      "value": null,
+      "label": "NULL"
+    },
+    "format_error": {
+      "value": "2024/01/01",
+      "label": "格式错误"
+    }
+  }
+}

@@ -1,0 +1,81 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "RunnerGo 部署全景",
+    "output": "runnergo-deployment.html",
+    "quality_profile": "standard",
+    "locale": "zh-CN",
+    "views": [
+      { "id": "native-platform", "label": "原生压测平台", "focus": ["web-ui", "admin-fe", "manage", "permission", "manage-ws", "mock"], "note": "原生 RunnerGo：前端入口 + manage/permission 业务后端 + Mock 与 WebSocket。" },
+      { "id": "stress-pipeline", "label": "压测数据链路", "focus": ["engine", "kafka", "collector", "mongo-db"], "note": "engine 执行压测上报指标，collector 消费写入 MongoDB。" },
+      { "id": "ai-test-stack", "label": "AI 智能测试栈", "focus": ["testhub-frontend", "testhub-backend", "testhub-celery", "testhub-skill-runner", "agent-engine", "auto-test"], "note": "TestHub 调度 agent-engine 与 auto-test，LLM 由 Ollama 提供。" },
+      { "id": "shared-data", "label": "共享数据层", "focus": ["mysql-db", "redis-db", "mongo-db", "kafka", "zookeeper", "ollama"], "note": "两条业务栈共用的存储、队列与 LLM 基础设施。" },
+      { "id": "monitoring", "label": "监控栈", "focus": ["prometheus", "grafana", "grafana-image-renderer", "node-exporter", "redis-exporter", "mysql-exporter"], "note": "Prometheus 抓取主机/Redis/MySQL 指标，Grafana 可视化并渲染图片。" }
+    ]
+  },
+  "components": [
+    { "id": "web-ui", "type": "frontend", "label": "Web UI", "sublabel": "原生前端 :9997", "pos": [40, 40], "size": [140, 48] },
+    { "id": "admin-fe", "type": "frontend", "label": "Admin FE", "sublabel": "管理后台 :9998", "pos": [200, 40], "size": [140, 48] },
+    { "id": "testhub-frontend", "type": "frontend", "label": "TestHub 前端", "sublabel": "nginx :9999", "pos": [680, 40], "size": [140, 48] },
+
+    { "id": "manage", "type": "backend", "label": "manage", "sublabel": "管理 API :58889", "pos": [40, 128], "size": [140, 48] },
+    { "id": "permission", "type": "backend", "label": "permission", "sublabel": "权限 :58890", "pos": [200, 128], "size": [140, 48] },
+    { "id": "manage-ws", "type": "backend", "label": "manage-ws", "sublabel": "WebSocket :58887", "pos": [360, 128], "size": [140, 48] },
+    { "id": "mock", "type": "backend", "label": "mock", "sublabel": "Mock :58900", "pos": [520, 128], "size": [140, 48] },
+    { "id": "testhub-backend", "type": "backend", "label": "TestHub 后端", "sublabel": "Django :8000", "pos": [680, 128], "size": [140, 48] },
+    { "id": "testhub-celery", "type": "backend", "label": "testhub-celery", "sublabel": "Celery worker", "pos": [840, 128], "size": [140, 48] },
+    { "id": "testhub-skill-runner", "type": "backend", "label": "skill-runner", "sublabel": "技能执行 :8080", "pos": [1000, 128], "size": [140, 48] },
+
+    { "id": "engine", "type": "backend", "label": "engine", "sublabel": "压测引擎", "pos": [40, 216], "size": [140, 48] },
+    { "id": "collector", "type": "backend", "label": "collector", "sublabel": "指标采集", "pos": [200, 216], "size": [140, 48] },
+    { "id": "file-server", "type": "backend", "label": "file-server", "sublabel": "文件服务", "pos": [360, 216], "size": [140, 48] },
+    { "id": "agent-engine", "type": "backend", "label": "agent-engine", "sublabel": "Go 智能引擎 :58891", "tag": "Orchestrator", "pos": [680, 216], "size": [140, 48] },
+    { "id": "auto-test", "type": "backend", "label": "auto-test", "sublabel": "Python Playwright", "pos": [840, 216], "size": [140, 48] },
+
+    { "id": "mysql-db", "type": "database", "label": "MySQL", "sublabel": "runnergo :3307", "pos": [40, 304], "size": [140, 48] },
+    { "id": "redis-db", "type": "database", "label": "Redis", "sublabel": "队列 :6380", "pos": [200, 304], "size": [140, 48] },
+    { "id": "kafka", "type": "messagebus", "label": "kafka", "sublabel": ":9092 · report", "pos": [360, 304], "size": [140, 48] },
+    { "id": "zookeeper", "type": "messagebus", "label": "zookeeper", "sublabel": "Kafka 协调", "pos": [520, 304], "size": [140, 48] },
+    { "id": "ollama", "type": "external", "label": "ollama", "sublabel": "LLM :58908", "pos": [680, 304], "size": [140, 48] },
+    { "id": "mongo-db", "type": "database", "label": "MongoDB", "sublabel": "压测报告 :27018", "pos": [1000, 304], "size": [140, 48] },
+
+    { "id": "prometheus", "type": "cloud", "label": "prometheus", "sublabel": ":9090", "pos": [40, 392], "size": [140, 48] },
+    { "id": "grafana", "type": "cloud", "label": "grafana", "sublabel": ":3000", "pos": [208, 392], "size": [140, 48] },
+    { "id": "grafana-image-renderer", "type": "cloud", "label": "gf-renderer", "sublabel": "图片渲染 :8081", "pos": [360, 392], "size": [140, 48] },
+    { "id": "node-exporter", "type": "cloud", "label": "node-exporter", "sublabel": "主机 :9100", "pos": [520, 392], "size": [140, 48] },
+    { "id": "redis-exporter", "type": "cloud", "label": "redis-exporter", "sublabel": ":9121", "pos": [680, 392], "size": [140, 48] },
+    { "id": "mysql-exporter", "type": "cloud", "label": "mysql-exporter", "sublabel": ":9104", "pos": [840, 392], "size": [140, 48] }
+  ],
+  "boundaries": [
+    { "kind": "region", "label": "原生压测平台", "wraps": ["web-ui", "admin-fe", "manage", "permission", "manage-ws", "mock", "engine", "collector", "file-server"] },
+    { "kind": "region", "label": "AI 智能测试栈", "wraps": ["testhub-frontend", "testhub-backend", "testhub-celery", "testhub-skill-runner", "agent-engine", "auto-test"] },
+    { "kind": "region", "label": "共享数据层", "wraps": ["mysql-db", "redis-db", "kafka", "zookeeper", "ollama", "mongo-db"] },
+    { "kind": "region", "label": "监控栈", "wraps": ["prometheus", "grafana", "grafana-image-renderer", "node-exporter", "redis-exporter", "mysql-exporter"] }
+  ],
+  "connections": [
+    { "id": "webui-to-manage", "from": "web-ui", "to": "manage", "fromSide": "bottom", "toSide": "top", "label": "API", "labelAt": [110, 108] },
+    { "id": "admin-to-permission", "from": "admin-fe", "to": "permission", "fromSide": "bottom", "toSide": "top", "label": "API", "labelAt": [270, 108] },
+    { "id": "thfe-to-thbackend", "from": "testhub-frontend", "to": "testhub-backend", "fromSide": "bottom", "toSide": "top", "label": "/api/", "labelAt": [750, 108] },
+    { "id": "engine-to-kafka", "from": "engine", "to": "kafka", "fromSide": "bottom", "toSide": "top", "via": [[110, 282], [430, 282]], "label": "指标上报", "labelAt": [270, 274] },
+    { "id": "kafka-to-mongo", "from": "kafka", "to": "mongo-db", "fromSide": "bottom", "toSide": "bottom", "via": [[430, 366], [1070, 366]], "label": "报告入库", "labelAt": [580, 372] },
+    { "id": "ae-to-ollama", "from": "agent-engine", "to": "ollama", "fromSide": "bottom", "toSide": "top", "label": "LLM", "labelAt": [750, 284] },
+    { "id": "autotest-to-thbackend", "from": "auto-test", "to": "testhub-backend", "fromSide": "left", "toSide": "right", "via": [[830, 240], [830, 152]], "label": "数据资产 API", "labelAt": [756, 198] },
+    { "id": "manage-to-mysql", "from": "manage", "to": "mysql-db", "fromSide": "left", "toSide": "left", "via": [[24, 152], [24, 328]], "label": "业务读写", "labelAt": [24, 278] },
+    { "id": "prom-to-grafana", "from": "prometheus", "to": "grafana" }
+  ],
+  "cards": [
+    { "dot": "cyan", "title": "服务与端口", "items": [
+      "前端：web-ui :9997 · admin-fe :9998 · testhub-frontend :9999",
+      "后端：manage :58889 · permission :58890 · manage-ws :58887 · agent-engine :58891 · auto-test :8000",
+      "数据/监控：MySQL :3307 · Redis :6380 · MongoDB :27018 · prometheus :9090 · grafana :3000"
+    ] },
+    { "dot": "emerald", "title": "核心依赖", "items": [
+      "agent-engine 依赖 ollama + redis + mysql + testhub-backend 鉴权",
+      "testhub-backend(Django) + celery + skill-runner 构成 TestHub",
+      "auto-test 经 HTTP API 读写数据资产（test-data-assets agent-publish / agent-context + X-Agent-Token），不直接访问 TestHub 数据库",
+      "engine-ui（原生 UI 自动化引擎）已下线：本部署 UI 自动化统一由 auto-test 承担",
+      "engine 压测 → collector → Kafka → MongoDB；全部 27 服务运行于 apipost_net"
+    ] }
+  ]
+}

@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <title>Web Recorder Storage State Fixture</title>
+  <style>
+    body { font-family: sans-serif; padding: 32px; }
+    #state { padding: 16px; border: 1px solid #94a3b8; border-radius: 8px; }
+  </style>
+</head>
+<body>
+  <h1>浏览器登录态恢复验证</h1>
+  <p id="state" role="status"></p>
+  <script>
+    const params = new URLSearchParams(location.search);
+    if (params.get('seed') === '1') {
+      localStorage.setItem('runnergo_auth_token', 'restored-local-storage');
+      document.cookie = 'runnergo_session=restored-cookie; path=/; SameSite=Lax';
+      history.replaceState({}, '', location.pathname);
+    }
+    const hasCookie = document.cookie.includes('runnergo_session=restored-cookie');
+    const localValue = localStorage.getItem('runnergo_auth_token') || 'missing';
+    document.getElementById('state').textContent = `localStorage=${localValue}; cookie=${hasCookie ? 'restored-cookie' : 'missing'}`;
+  </script>
+</body>
+</html>

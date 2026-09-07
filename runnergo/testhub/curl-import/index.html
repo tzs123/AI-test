@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>cURL 导入接口 - AI测试平台</title>
+<link rel="stylesheet" href="/testhub/curl-import/style.css?v=2">
+</head>
+<body>
+<main class="page">
+  <header class="page-head">
+    <h1>从 cURL 导入接口</h1>
+    <p class="sub">粘贴从浏览器 DevTools、终端或 Postman 复制的 cURL 命令，解析后直接保存到「API测试」的接口列表。支持一次粘贴多条命令（换行分隔）。</p>
+  </header>
+
+  <section class="panel">
+    <div class="panel-title">1. 粘贴 cURL 命令</div>
+    <textarea id="curlInput" spellcheck="false" placeholder="curl -X POST 'https://api.example.com/v1/login?from=web' \
+  -H 'Content-Type: application/json' \
+  -H 'Authorization: Bearer token' \
+  --data-raw '{&quot;username&quot;:&quot;demo&quot;,&quot;password&quot;:&quot;123456&quot;}'"></textarea>
+    <div class="panel-actions">
+      <button id="parseBtn" class="btn primary" type="button">解析预览</button>
+      <button id="clearBtn" class="btn" type="button">清空</button>
+      <span id="parseStatus" class="status"></span>
+    </div>
+  </section>
+
+  <section class="panel" id="previewPanel" hidden>
+    <div class="panel-title">2. 预览解析结果 <span class="hint">接口名称可编辑，确认后保存</span></div>
+    <div id="previewList" class="preview-list"></div>
+  </section>
+
+  <section class="panel save-panel" id="savePanel" hidden>
+    <div class="panel-title">3. 保存到接口列表</div>
+    <div class="panel-actions">
+      <button id="saveBtn" class="btn primary" type="button">导入并保存</button>
+      <span id="saveStatus" class="status"></span>
+    </div>
+    <div id="saveResult" class="save-result" hidden>
+      <div class="save-result-ok">导入成功，已保存到当前项目的接口列表。</div>
+      <button class="btn primary" id="gotoApiBtn" type="button">查看接口列表</button>
+    </div>
+  </section>
+</main>
+<script src="/testhub/curl-import/app.js?v=2"></script>
+</body>
+</html>

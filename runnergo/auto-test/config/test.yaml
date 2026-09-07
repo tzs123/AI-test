@@ -1,0 +1,4 @@
+# 被测环境配置（由 utils/yaml_loader.load_config 读取，ENV=test 时生效）
+# 不同环境可建 config/prod.yaml 等，通过 ENV 环境变量切换
+base_url: http://172.16.0.88:9527
+timeout: 30

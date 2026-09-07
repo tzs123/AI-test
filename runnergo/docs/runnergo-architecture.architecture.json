@@ -1,0 +1,66 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "RunnerGo 平台架构",
+    "output": "runnergo-architecture.html",
+    "quality_profile": "showcase",
+    "locale": "zh-CN",
+    "views": [
+      { "id": "smart-test-path", "label": "智能测试主链路", "focus": ["users", "web-fe", "agent-engine", "ollama", "mysql"], "note": "从前端发起，到 LLM 设计用例，再到结果持久化。" },
+      { "id": "ui-automation", "label": "UI 自动化链路", "focus": ["testhub-backend", "auto-test", "ollama"], "note": "TestHub 调度 Playwright 执行页面流程并产出 Allure 报告。" },
+      { "id": "stress-platform", "label": "原生压测链路", "focus": ["web-fe", "manage", "engine", "kafka", "mongo"], "note": "engine 执行压测，指标经 Kafka 由 collector 写入 MongoDB。" },
+      { "id": "shared-state", "label": "共享数据层", "focus": ["mysql", "redis", "kafka", "mongo"], "note": "两条业务栈共用的存储与队列基础设施。" }
+    ]
+  },
+  "components": [
+    { "id": "users", "type": "external", "label": "用户", "sublabel": "浏览器", "pos": [40, 90], "size": [110, 60] },
+    { "id": "web-fe", "type": "frontend", "label": "Web 前端入口", "sublabel": "nginx :9999 · web-ui :9997", "pos": [230, 90], "size": [190, 68] },
+    { "id": "manage", "type": "backend", "label": "原生平台后端", "sublabel": "manage :30000 · permission", "pos": [90, 250], "size": [180, 72] },
+    { "id": "engine", "type": "backend", "label": "压测引擎", "sublabel": "engine · collector", "pos": [90, 380], "size": [170, 64] },
+    { "id": "kafka", "type": "messagebus", "label": "Kafka", "sublabel": "topic: report · ZK", "pos": [340, 380], "size": [160, 60] },
+    { "id": "mongo", "type": "database", "label": "MongoDB", "sublabel": "压测报告 :27017", "pos": [340, 500], "size": [160, 60] },
+    { "id": "testhub-backend", "type": "backend", "label": "TestHub 平台后端", "sublabel": "Django :8000 · Celery", "pos": [670, 250], "size": [190, 72] },
+    { "id": "agent-engine", "type": "backend", "label": "智能测试引擎", "sublabel": "Go agent-server :8088", "tag": "Orchestrator", "pos": [630, 370], "size": [200, 80] },
+    { "id": "ollama", "type": "external", "label": "Ollama LLM", "sublabel": "qwen3:8b :11434 · host Mac Metal", "pos": [880, 360], "size": [160, 60] },
+    { "id": "auto-test", "type": "backend", "label": "UI 自动化引擎", "sublabel": "Python :8000 · Playwright", "pos": [1110, 370], "size": [180, 72] },
+    { "id": "mysql", "type": "database", "label": "MySQL", "sublabel": "runnergo 库 :3306", "pos": [640, 500], "size": [180, 64] },
+    { "id": "redis", "type": "database", "label": "Redis", "sublabel": "队列 / 缓存 :6379", "pos": [870, 500], "size": [150, 60] }
+  ],
+  "boundaries": [
+    { "kind": "region", "label": "AI 智能测试栈", "wraps": ["testhub-backend", "agent-engine", "ollama", "auto-test"] },
+    { "kind": "region", "label": "原生 RunnerGo 压测平台", "wraps": ["manage", "engine", "kafka", "mongo"] }
+  ],
+  "connections": [
+    { "id": "users-to-fe", "from": "users", "to": "web-fe", "label": "访问平台" },
+    { "id": "fe-to-th", "from": "web-fe", "to": "testhub-backend", "label": "Django API /api/", "fromSide": "bottom", "toSide": "top" },
+    { "id": "fe-to-ae", "from": "web-fe", "to": "agent-engine", "label": "智能测试 /api/v1/agent/", "variant": "emphasis", "fromSide": "bottom", "toSide": "top" },
+    { "id": "fe-to-manage", "from": "web-fe", "to": "manage", "label": "管理 API", "fromSide": "bottom", "toSide": "top" },
+    { "id": "ae-to-th", "from": "agent-engine", "to": "testhub-backend", "label": "Token 校验", "variant": "dashed", "fromSide": "top", "toSide": "bottom" },
+    { "id": "ae-to-ollama", "from": "agent-engine", "to": "ollama", "label": "用例设计", "variant": "emphasis" },
+    { "id": "auto-to-ollama", "from": "auto-test", "to": "ollama", "label": "AI 定位", "variant": "dashed" },
+    { "id": "th-to-auto", "from": "testhub-backend", "to": "auto-test", "label": "UI 任务调度", "fromSide": "right", "toSide": "top" },
+    { "id": "ae-to-redis", "from": "agent-engine", "to": "redis", "label": "异步任务队列", "fromSide": "right", "toSide": "top", "labelAt": [895, 434] },
+    { "id": "ae-to-mysql", "from": "agent-engine", "to": "mysql", "label": "任务持久化", "fromSide": "bottom", "toSide": "top", "labelAt": [730, 475] },
+    { "id": "manage-to-mysql", "from": "manage", "to": "mysql", "label": "业务数据读写", "fromSide": "bottom", "toSide": "left", "via": [[180, 350], [565, 350], [565, 532]], "labelAt": [180, 336] },
+    { "id": "engine-to-kafka", "from": "engine", "to": "kafka", "label": "指标上报" },
+    { "id": "kafka-to-mongo", "from": "kafka", "to": "mongo", "label": "消费入库", "labelAt": [420, 470] }
+  ],
+  "cards": [
+    { "dot": "cyan", "title": "智能测试链路", "items": [
+      "nginx 将 /api/v1/agent/ 代理到 Go agent-engine (:8088)",
+      "Orchestrator 串联 DesignAgent → ExecuteAgent → EvaluateAgent",
+      "LLM 用例由本地 Ollama qwen3:8b 设计；异步 /agent/runs 持久化 MySQL"
+    ] },
+    { "dot": "emerald", "title": "UI 自动化与压测", "items": [
+      "TestHub 调度 auto-test（Playwright + Allure），数据写 runnergo MySQL",
+      "engine 指标经 Kafka topic: report 由 collector 写入 MongoDB",
+      "manage / permission / mock / file-server 提供原生平台服务"
+    ] },
+    { "dot": "violet", "title": "共享基础设施", "items": [
+      "MySQL :3306 · Redis :6379（agent 与 Celery 队列）· MongoDB :27017",
+      "Prometheus / Grafana 监控经 /grafana/ 子路径访问",
+      "全部服务运行于 docker compose 网络 apipost_net"
+    ] }
+  ]
+}

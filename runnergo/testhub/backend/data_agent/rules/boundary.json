@@ -1,0 +1,26 @@
+{
+  "string": {
+    "empty": { "label": "空字符串", "value": "" },
+    "null": { "label": "NULL", "value": null },
+    "long": { "label": "超长字符串", "value": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA" },
+    "special": { "label": "特殊字符", "value": "!@#$%^&*()_+-=[]{}|;:'\",.<>/?`~" }
+  },
+  "number": {
+    "negative": { "label": "负数", "value": -1 },
+    "zero": { "label": "0", "value": 0 },
+    "max": { "label": "最大值", "value": 2147483647 },
+    "overflow": { "label": "超过最大值", "value": 2147483648 }
+  },
+  "boolean": {
+    "null": { "label": "NULL", "value": null },
+    "string_bool": { "label": "字符串布尔", "value": "true" }
+  },
+  "array": {
+    "empty": { "label": "空数组", "value": [] },
+    "null": { "label": "NULL", "value": null }
+  },
+  "date": {
+    "empty": { "label": "空日期", "value": "" },
+    "invalid": { "label": "非法日期", "value": "2026-99-99" }
+  }
+}

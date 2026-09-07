@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <title>Web Recorder Advanced Fixture</title>
+  <style>
+    body { font-family: sans-serif; padding: 24px; }
+    .grid { display: grid; grid-template-columns: 360px 1fr; gap: 24px; }
+    .controls { display: grid; gap: 14px; align-content: start; }
+    select, input, button, a { padding: 9px; }
+    iframe { width: 520px; height: 240px; border: 2px solid #64748b; }
+    #shadow-host { display: block; margin-top: 18px; padding: 12px; border: 1px dashed #7c3aed; }
+  </style>
+</head>
+<body>
+  <h1>高级录制能力验证</h1>
+  <div class="grid">
+    <section class="controls">
+      <label>地区
+        <select id="region" name="region" data-testid="region-select">
+          <option value="hz">杭州</option>
+          <option value="sh">上海</option>
+          <option value="bj">北京</option>
+        </select>
+      </label>
+      <label><input id="agreement" type="checkbox" name="agreement"> 同意协议</label>
+      <label>附件<input id="attachment" type="file" name="attachment"></label>
+      <a id="new-tab-link" href="web_recorder_new_tab.html" target="_blank">打开新标签页</a>
+      <div id="shadow-host"></div>
+      <p id="shadow-result" role="status"></p>
+    </section>
+    <iframe id="business-frame" name="business-frame" src="web_recorder_iframe.html"></iframe>
+  </div>
+  <script>
+    const host = document.getElementById('shadow-host');
+    const root = host.attachShadow({mode: 'open'});
+    root.innerHTML = `<style>button{padding:10px;background:#7c3aed;color:white}</style><button id="shadow-button" data-testid="shadow-submit">Shadow 提交</button>`;
+    root.getElementById('shadow-button').addEventListener('click', () => {
+      document.getElementById('shadow-result').textContent = 'Shadow 操作成功';
+    });
+  </script>
+</body>
+</html>

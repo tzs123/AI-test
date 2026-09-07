@@ -1,0 +1,234 @@
+{% extends "admin/change_list.html" %}
+
+{% block content %}
+  <div class="analytics-dashboard">
+    <div class="analytics-cards">
+      <div class="analytics-card">
+        <div class="analytics-card__label">今日事件总数</div>
+        <div class="analytics-card__value">{{ analytics_summary.today_events }}</div>
+      </div>
+      <div class="analytics-card">
+        <div class="analytics-card__label">近 7 天事件总数</div>
+        <div class="analytics-card__value">{{ analytics_summary.seven_day_events }}</div>
+      </div>
+      <div class="analytics-card">
+        <div class="analytics-card__label">页面访问总数</div>
+        <div class="analytics-card__value">{{ analytics_summary.page_view_events }}</div>
+      </div>
+      <div class="analytics-card">
+        <div class="analytics-card__label">首页卡片点击总数</div>
+        <div class="analytics-card__value">{{ analytics_summary.home_card_click_events }}</div>
+      </div>
+      <div class="analytics-card">
+        <div class="analytics-card__label">登录成功次数</div>
+        <div class="analytics-card__value">{{ analytics_summary.login_success_events }}</div>
+      </div>
+      <div class="analytics-card">
+        <div class="analytics-card__label">活跃用户</div>
+        <div class="analytics-card__value">{{ analytics_summary.active_users }}</div>
+      </div>
+      <div class="analytics-card">
+        <div class="analytics-card__label">平均耗时(ms)</div>
+        <div class="analytics-card__value">{{ analytics_summary.avg_duration }}</div>
+      </div>
+      <div class="analytics-card">
+        <div class="analytics-card__label">累计事件总数</div>
+        <div class="analytics-card__value">{{ analytics_summary.total_events }}</div>
+      </div>
+    </div>
+
+    <div class="analytics-panels">
+      <div class="analytics-panel">
+        <h2>模块访问排行</h2>
+        <table class="analytics-table">
+          <thead>
+            <tr>
+              <th>模块</th>
+              <th>中文名称</th>
+              <th>次数</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for item in analytics_module_ranking %}
+              <tr>
+                <td>{{ item.module|default:"未分类" }}</td>
+                <td>{{ item.module_label }}</td>
+                <td>{{ item.total }}</td>
+              </tr>
+            {% empty %}
+              <tr>
+                <td colspan="3">暂无数据</td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+
+      <div class="analytics-panel">
+        <h2>首页卡片点击排行</h2>
+        <table class="analytics-table">
+          <thead>
+            <tr>
+              <th>卡片</th>
+              <th>中文名称</th>
+              <th>次数</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for item in analytics_home_card_ranking %}
+              <tr>
+                <td>{{ item.card_type|default:"未分类" }}</td>
+                <td>{{ item.card_label }}</td>
+                <td>{{ item.total }}</td>
+              </tr>
+            {% empty %}
+              <tr>
+                <td colspan="3">暂无数据</td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+
+      <div class="analytics-panel analytics-panel--wide">
+        <h2>页面访问排行</h2>
+        <table class="analytics-table">
+          <thead>
+            <tr>
+              <th>页面路径</th>
+              <th>中文名称</th>
+              <th>次数</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for item in analytics_page_ranking %}
+              <tr>
+                <td>{{ item.page_path }}</td>
+                <td>{{ item.page_label }}</td>
+                <td>{{ item.total }}</td>
+              </tr>
+            {% empty %}
+              <tr>
+                <td colspan="3">暂无数据</td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+
+      <div class="analytics-panel analytics-panel--wide">
+        <h2>近 7 天事件趋势</h2>
+        <table class="analytics-table">
+          <thead>
+            <tr>
+              <th>日期</th>
+              <th>事件数</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for item in analytics_daily_trend %}
+              <tr>
+                <td>{{ item.day|date:"Y-m-d" }}</td>
+                <td>{{ item.total }}</td>
+              </tr>
+            {% empty %}
+              <tr>
+                <td colspan="2">暂无数据</td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <style>
+    .analytics-dashboard {
+      margin-bottom: 24px;
+    }
+
+    .analytics-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+
+    .analytics-card,
+    .analytics-panel {
+      background: #fff;
+      border: 1px solid #ebeef5;
+      border-radius: 8px;
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+    }
+
+    .analytics-card {
+      padding: 14px 16px;
+    }
+
+    .analytics-card__label {
+      color: #606266;
+      font-size: 13px;
+      margin-bottom: 8px;
+    }
+
+    .analytics-card__value {
+      color: #303133;
+      font-size: 24px;
+      font-weight: 600;
+      line-height: 1.2;
+    }
+
+    .analytics-panels {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 16px;
+      margin-bottom: 20px;
+    }
+
+    .analytics-panel {
+      padding: 16px;
+    }
+
+    .analytics-panel h2 {
+      margin: 0 0 12px;
+      font-size: 16px;
+    }
+
+    .analytics-panel--wide {
+      grid-column: span 2;
+    }
+
+    .analytics-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .analytics-table th,
+    .analytics-table td {
+      border-bottom: 1px solid #f0f2f5;
+      padding: 8px 10px;
+      text-align: left;
+      vertical-align: top;
+      word-break: break-all;
+    }
+
+    .analytics-table th {
+      color: #606266;
+      font-weight: 600;
+      background: #fafafa;
+    }
+
+    @media (max-width: 1024px) {
+      .analytics-panels {
+        grid-template-columns: 1fr;
+      }
+
+      .analytics-panel--wide {
+        grid-column: span 1;
+      }
+    }
+  </style>
+
+  {{ block.super }}
+{% endblock %}

@@ -1,0 +1,268 @@
+openapi: 3.0.3
+info:
+  title: RunnerGo Smart Test Engine
+  version: 1.0.0
+paths:
+  /agent/test-cases:
+    post:
+      summary: Generate AI test cases
+      security: [{ bearerAuth: [] }]
+      requestBody:
+        required: true
+        content: { application/json: { schema: { $ref: '#/components/schemas/TestTask' } } }
+      responses:
+        '200': { description: Generated test cases }
+        '401': { description: Authentication required }
+  /agent/execute:
+    post:
+      summary: Execute test cases
+      security: [{ bearerAuth: [] }]
+      responses:
+        '200': { description: Execution results }
+  /agent/run:
+    post:
+      summary: Run design, execute and evaluate agents
+      security: [{ bearerAuth: [] }]
+      responses:
+        '202': { description: Workflow result }
+  /agent/runs:
+    post:
+      summary: Queue a durable asynchronous workflow
+      security: [{ bearerAuth: [] }]
+      requestBody:
+        required: true
+        content: { application/json: { schema: { $ref: '#/components/schemas/TestTask' } } }
+      responses:
+        '202': { description: Task queued; poll task status or subscribe to SSE }
+        '400': { description: Invalid task }
+        '401': { description: Authentication required }
+  /agent/tasks/{id}:
+    get:
+      summary: Get workflow status
+      security: [{ bearerAuth: [] }]
+      parameters: [{ name: id, in: path, required: true, schema: { type: string } }]
+      responses:
+        '200': { description: Workflow status }
+        '404': { description: Task not found }
+  /agent/tasks/{id}/events:
+    get:
+      summary: Stream task status events using Server-Sent Events
+      security: [{ bearerAuth: [] }]
+      parameters: [{ name: id, in: path, required: true, schema: { type: string } }]
+      responses:
+        '200': { description: text/event-stream status updates }
+        '401': { description: Authentication required }
+  /agent/tasks:
+    get:
+      summary: List workflow tasks for the current service instance
+      security: [{ bearerAuth: [] }]
+      responses:
+        '200':
+          description: Workflow task list
+          content:
+            application/json: { schema: { $ref: '#/components/schemas/TaskListResponse' } }
+        '401': { description: Authentication required }
+  /agent/capabilities:
+    get:
+      summary: List available Agent capabilities
+      security: [{ bearerAuth: [] }]
+      responses:
+        '200':
+          description: Agent capabilities and queue status
+          content:
+            application/json: { schema: { $ref: '#/components/schemas/CapabilitiesResponse' } }
+        '401': { description: Authentication required }
+  /agent/knowledge/search:
+    post:
+      summary: Retrieve knowledge relevant to a task context
+      security: [{ bearerAuth: [] }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [context]
+              properties:
+                context: { type: string }
+      responses:
+        '200': { description: Ranked knowledge entries }
+        '400': { description: Invalid JSON payload }
+        '401': { description: Authentication required }
+  /agent/knowledge/documents:
+    post:
+      summary: Add a knowledge document to the Agent knowledge base
+      security: [{ bearerAuth: [] }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/Knowledge' }
+      responses:
+        '201': { description: Knowledge document saved }
+        '400': { description: Invalid or incomplete document }
+        '401': { description: Authentication required }
+  /agent/quality:
+    post:
+      summary: Evaluate execution quality and render a report
+      security: [{ bearerAuth: [] }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                results:
+                  type: array
+                  items: { $ref: '#/components/schemas/TestResult' }
+      responses:
+        '200': { description: Quality report and readable summary }
+        '400': { description: Invalid JSON payload }
+        '401': { description: Authentication required }
+  /agent/executor-config:
+    get:
+      summary: Get the active test executor configuration
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - name: project_id
+          in: query
+          required: false
+          schema: { type: integer, format: int64 }
+      responses:
+        '200':
+          description: Executor configuration
+          content:
+            application/json: { schema: { $ref: '#/components/schemas/ExecutorConfigResponse' } }
+        '401': { description: Authentication required }
+    put:
+      summary: Save and activate a test executor configuration
+      security: [{ bearerAuth: [] }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/ExecutorConfig' }
+      responses:
+        '200':
+          description: Executor configuration saved
+          content:
+            application/json: { schema: { $ref: '#/components/schemas/ExecutorConfigResponse' } }
+        '400': { description: Invalid executor configuration }
+        '401': { description: Authentication required }
+components:
+  securitySchemes:
+    bearerAuth: { type: http, scheme: bearer }
+  schemas:
+    TestTask:
+      type: object
+      required: [description]
+      properties:
+        id: { type: string }
+        name: { type: string }
+        description: { type: string }
+        project_id: { type: integer }
+        context: { type: object, additionalProperties: true }
+    TestCase:
+      type: object
+      properties:
+        id: { type: string }
+        title: { type: string }
+        scenario_type: { type: string, enum: [positive, boundary, negative] }
+        steps: { type: array, items: { type: object } }
+        expected_result: { type: string }
+        script: { type: string, description: API path/URL or allow-listed command }
+        metadata: { type: object, additionalProperties: true, description: Optional method, path/url, body and expected_status overrides }
+    TestResult:
+      type: object
+      required: [case_id, status]
+      properties:
+        case_id: { type: string }
+        title: { type: string }
+        status: { type: string, enum: [passed, failed, skipped, error] }
+        expected: { type: string }
+        actual: { type: string }
+        logs: { type: string }
+        error: { type: string }
+        duration: { type: integer, format: int64 }
+        started_at: { type: string, format: date-time }
+        finished_at: { type: string, format: date-time }
+    Knowledge:
+      type: object
+      required: [title, type, content]
+      properties:
+        id: { type: string }
+        title: { type: string }
+        type: { type: string, enum: [document, bug, standard] }
+        content: { type: string }
+        source: { type: string }
+        metadata: { type: object, additionalProperties: true }
+        score: { type: number, format: double }
+    TaskListResponse:
+      type: object
+      properties:
+        total: { type: integer }
+        tasks:
+          type: array
+          items: { $ref: '#/components/schemas/OrchestrationResult' }
+    CapabilitiesResponse:
+      type: object
+      properties:
+        llm_provider: { type: string }
+        queue_length: { type: integer }
+        executor:
+          type: object
+          properties:
+            enabled: { type: boolean }
+            type: { type: string, enum: [none, api, command] }
+        features: { type: array, items: { type: string } }
+        agents:
+          type: array
+          items:
+            type: object
+            properties:
+              name: { type: string }
+              role: { type: string }
+              status: { type: string }
+    OrchestrationResult:
+      type: object
+      properties:
+        task: { $ref: '#/components/schemas/TestTask' }
+        test_cases: { type: array, items: { $ref: '#/components/schemas/TestCase' } }
+        results: { type: array, items: { $ref: '#/components/schemas/TestResult' } }
+        quality: { $ref: '#/components/schemas/QualityReport' }
+        steps: { type: array, items: { type: string } }
+    QualityReport:
+      type: object
+      properties:
+        total_cases: { type: integer }
+        executed_cases: { type: integer }
+        passed_cases: { type: integer }
+        failed_cases: { type: integer }
+        skipped_cases: { type: integer }
+        coverage_rate: { type: number, format: double }
+        defect_detection_rate: { type: number, format: double }
+        case_quality_score: { type: number, format: double }
+        summary: { type: string }
+        recommendations: { type: array, items: { type: string } }
+    ExecutorConfig:
+      type: object
+      required: [type, enabled]
+      properties:
+        id: { type: integer, format: int64 }
+        project_id: { type: integer, format: int64 }
+        enabled: { type: boolean, description: Set false to disable execution }
+        type: { type: string, enum: [none, api, command] }
+        base_url: { type: string, format: uri, description: HTTP API origin used by API executor }
+        method: { type: string, example: GET }
+        expected_status: { type: integer, minimum: 100, maximum: 599, example: 200 }
+        timeout_ms: { type: integer, minimum: 0, example: 30000 }
+        headers: { type: object, additionalProperties: { type: string }, description: HTTP headers; Authorization values are not returned by GET }
+        token: { type: string, writeOnly: true, description: Optional bearer token sent as Authorization header; omit it on update to preserve the stored value }
+        command: { type: string, description: Optional default command for command executor }
+        allowed_commands: { type: array, items: { type: string }, description: Executable allow-list }
+    ExecutorConfigResponse:
+      type: object
+      properties:
+        config: { $ref: '#/components/schemas/ExecutorConfig' }
+        message: { type: string }

@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <title>Web Recorder Fixture</title>
+  <style>
+    body { font-family: sans-serif; padding: 40px; }
+    form { width: 360px; display: grid; gap: 14px; }
+    label { display: grid; gap: 6px; }
+    input, button { padding: 10px; }
+  </style>
+</head>
+<body>
+  <h1>录制器验证页面</h1>
+  <form id="login-form" onsubmit="event.preventDefault(); document.getElementById('result').textContent='欢迎，'+document.getElementById('username').value">
+    <label>用户名<input id="username" name="username" data-testid="username-input" placeholder="请输入用户名"></label>
+    <label>密码<input id="password" name="password" type="password" placeholder="请输入密码"></label>
+    <button type="submit" data-testid="login-submit">登录</button>
+  </form>
+  <p id="result" role="status"></p>
+</body>
+</html>

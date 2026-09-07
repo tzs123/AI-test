@@ -1,0 +1,26 @@
+# ===== 测试平台全局配置 =====
+server:
+  host: 0.0.0.0
+  port: 8000
+  external_url: "http://localhost:9999"  # RunnerGo Web 入口，报告和飞书链接统一使用 localhost
+
+# Redis 队列（负载均衡：多 worker 从同一队列消费）
+redis:
+  host: redis-db
+  port: 6379
+  password: mypassword
+  db: 0
+  queue: test_tasks
+
+# 执行器
+executor:
+  workers: 2                 # 默认启动 worker 数（负载均衡节点）
+  results_dir: reports/allure-results
+  report_dir: reports/allure-report
+  screenshots_dir: screenshots
+  logs_dir: logs
+  runtime_dir: runtime
+
+# allure 命令
+allure:
+  cli: /Users/tanzsongsen/RunnerGo/runnergo/tools/allure-2.27.0/bin/allure

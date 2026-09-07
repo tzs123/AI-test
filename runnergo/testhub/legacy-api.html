@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>API测试 - AI测试平台</title><script src="/testhub/theme-sync.js?v=1"></script><link rel="stylesheet" href="/testhub/legacy-shell.css?v=2"></head>
+<body><div class="shell"><nav class="shell-nav" aria-label="测试模块"><span class="shell-brand">RunnerGo</span><a class="shell-link active" href="/testhub/legacy-api.html">API测试</a><a class="shell-link" href="/testhub/legacy-ui.html">UI自动化</a><a class="shell-link" href="/testhub/app-automation/dashboard">APP自动化</a><a class="shell-link" href="/testhub/ai-generation/requirement-analysis">AI用例生成</a><a class="shell-link" href="/testhub/performance/dashboard">性能看板</a><button class="shell-action" id="curlImportBtn" type="button">cURL 导入</button></nav><iframe class="shell-frame" src="/index.html?testhubShell=dedup-v2&cb=2#/apis" title="API测试"></iframe></div>
+
+<div class="curl-modal" id="curlModal" hidden>
+  <div class="curl-modal-box">
+    <div class="curl-modal-head"><span>从 cURL 导入接口</span><button class="curl-modal-close" id="curlModalClose" type="button" aria-label="关闭">&times;</button></div>
+    <iframe class="curl-modal-frame" src="/testhub/curl-import/?v=2" title="cURL 导入"></iframe>
+  </div>
+</div>
+
+<style>
+.shell-action { display: inline-flex; align-items: center; height: 32px; margin-left: 12px; padding: 0 14px; border: 1px solid var(--brand); border-radius: 4px; background: var(--brand); color: #fff; font-size: 13px; cursor: pointer; }
+.shell-action:hover { filter: brightness(1.08); }
+.curl-modal { position: fixed; inset: 0; z-index: 10; display: flex; align-items: center; justify-content: center; background: rgba(0,0,0,.45); }
+.curl-modal[hidden] { display: none; }
+.curl-modal-box { display: flex; flex-direction: column; width: min(1020px, 92vw); height: min(760px, 88vh); background: var(--shell-nav-bg); border-radius: 8px; overflow: hidden; box-shadow: 0 8px 32px rgba(0,0,0,.18); }
+.curl-modal-head { flex: 0 0 48px; display: flex; align-items: center; justify-content: space-between; padding: 0 16px; font-size: 15px; font-weight: 600; border-bottom: 1px solid var(--shell-border); }
+.curl-modal-close { border: 0; background: transparent; font-size: 20px; line-height: 1; color: var(--shell-text-muted); cursor: pointer; }
+.curl-modal-close:hover { color: #f56c6c; }
+.curl-modal-frame { flex: 1 1 auto; width: 100%; border: 0; }
+</style>
+
+<script>
+(function () {
+  var btn = document.getElementById('curlImportBtn');
+  var modal = document.getElementById('curlModal');
+  var frame = modal.querySelector('.curl-modal-frame');
+  var imported = false;
+  function open() { imported = false; frame.src = '/testhub/curl-import/?v=3'; modal.hidden = false; }
+  function close(route) {
+    modal.hidden = true;
+    var f = document.querySelector('.shell-frame');
+    if (route) {
+      // 导航到指定路由（SPA hash 路由）
+      f.src = '/index.html?testhubShell=dedup-v2&cb=2' + route;
+    } else if (imported) {
+      // 没有指定路由但导入了接口，默认刷新到测试对象页面
+      f.src = '/index.html?testhubShell=dedup-v2&cb=2#/apis';
+    }
+  }
+  btn.addEventListener('click', open);
+  document.getElementById('curlModalClose').addEventListener('click', function () { close(); });
+  modal.addEventListener('click', function (e) { if (e.target === modal) close(); });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && !modal.hidden) close(); });
+  window.addEventListener('message', function (e) {
+    if (!e || !e.data) return;
+    if (e.data.type === 'curl-imported') imported = true;
+    if (e.data.type === 'curl-import-close') close(e.data.route);
+  });
+})();
+</script>
+</body></html>

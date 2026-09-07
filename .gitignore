@@ -1,0 +1,77 @@
+# ===== 运行时数据 / 数据库数据（不可提交，体积巨大）=====
+runnergo/ollama/
+runnergo/mongo/data/
+runnergo/mysql/data/
+runnergo/redis/data/
+runnergo/testhub/data/
+runnergo/testhub/media/
+runnergo/testhub/logs/
+runnergo/auto-test/reports/
+runnergo/auto-test/screenshots/
+runnergo/auto-test/runtime/
+runnergo/auto-test/logs/
+runnergo/auto-test/uploads/
+runnergo/auto-test/imports/
+runnergo/file-server/data/
+runnergo/static/
+
+# ===== 二进制补丁 / 编译产物（部署时单独获取）=====
+runnergo/engine-patch/
+runnergo/collector-patch/
+runnergo/manage-patch/
+runnergo/backend/agent-server
+runnergo/backend/cmd/agent-server/agent-server
+wda-derived/
+
+# ===== 工具二进制（allure 很大，部署时单独下载）=====
+runnergo/tools/allure-2.27.0/
+
+# ===== Python =====
+__pycache__/
+*.pyc
+*.pyo
+*.egg-info/
+.venv/
+venv/
+env/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# ===== Node =====
+node_modules/
+dist/
+build/
+.next/
+coverage/
+.nuxt/
+
+# ===== 数据库文件 =====
+*.sqlite3
+*.sqlite3-shm
+*.sqlite3-wal
+*.sqlite3.bak
+*.db
+
+# ===== IDE / 编辑器 =====
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store
+
+# ===== 环境与密钥 =====
+.env
+.env.local
+.env.*.local
+*.pem
+*.key
+
+# ===== 日志 =====
+*.log
+logs/
+
+# ===== 临时文件 =====
+*.tmp
+*.bak
+*.orig

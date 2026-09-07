@@ -1,0 +1,903 @@
+flow_version: 2
+step_execution_mode: page_aware
+name: 浏览器录制用例
+description: ''
+base_url: http://172.16.0.88:9527/home?channelId=JDYFWH&productId=JDYPRD01
+browser:
+  engine: chromium
+  viewport:
+    width: 375
+    height: 812
+  locale: zh-CN
+timeout: 10000
+variables: []
+database: {}
+runtime_assertions: []
+steps:
+- id: step_41840f91e118
+  action: goto
+  name: 打开 http://172.16.0.88:9527/home?channelId=JDYFWH&productId=JDYPRD01
+  url: http://172.16.0.88:9527/home?channelId=JDYFWH&productId=JDYPRD01
+  timeout: 30000
+- id: step_4c1f716c51a6
+  action: click
+  name: 点击 手机
+  element:
+    id: wel_cb0a45a8c886
+    name: 手机_c886
+    tag: input
+    role: textbox
+    text: ''
+    label: 手机
+    accessible_name: 手机
+    input_type: tel
+    page_url: http://172.16.0.88:9527/home?channelId=JDYFWH&productId=JDYPRD01
+    frame_path: []
+    shadow_hosts: []
+    locators:
+    - strategy: role
+      role: textbox
+      name: 手机
+      value: 手机
+    - strategy: label
+      value: 手机
+    - strategy: placeholder
+      value: 请输入手机号
+    - strategy: id
+      value: van-field-1-input
+    - strategy: name
+      value: phone
+    - strategy: css
+      value: '#van-field-1-input'
+      unique: true
+    - strategy: xpath
+      value: //*[@id="van-field-1-input"]
+    fingerprint:
+      version: 1
+      tag: input
+      role: textbox
+      accessible_name: 手机
+      text: ''
+      attrs:
+        testid: ''
+        id: van-field-1-input
+        name: phone
+        placeholder: 请输入手机号
+        type: tel
+      control_type: ''
+      keyboard: {}
+      group: {}
+      shadow_hosts: []
+      parent:
+        tag: div
+        text: ''
+      normalized_position:
+        x: 0.6431666666666667
+        y: 0.5636930418719212
+      minimum_score: 55
+      minimum_gap: 8
+    fallback_position:
+      x: 0.6431666666666667
+      y: 0.5636930418719212
+  timeout: 10000
+  wait_after: 0.2
+- id: step_36a0ed847df6
+  action: fill
+  name: 输入 手机
+  element:
+    id: wel_cb0a45a8c886
+    name: 手机_c886
+    tag: input
+    role: textbox
+    text: ''
+    label: 手机
+    accessible_name: 手机
+    input_type: tel
+    page_url: http://172.16.0.88:9527/home?channelId=JDYFWH&productId=JDYPRD01
+    frame_path: []
+    shadow_hosts: []
+    locators:
+    - strategy: role
+      role: textbox
+      name: 手机
+      value: 手机
+    - strategy: label
+      value: 手机
+    - strategy: placeholder
+      value: 请输入手机号
+    - strategy: id
+      value: van-field-1-input
+    - strategy: name
+      value: phone
+    - strategy: css
+      value: '#van-field-1-input'
+      unique: true
+    - strategy: xpath
+      value: //*[@id="van-field-1-input"]
+    fingerprint:
+      version: 1
+      tag: input
+      role: textbox
+      accessible_name: 手机
+      text: ''
+      attrs:
+        testid: ''
+        id: van-field-1-input
+        name: phone
+        placeholder: 请输入手机号
+        type: tel
+      control_type: ''
+      keyboard: {}
+      group: {}
+      shadow_hosts: []
+      parent:
+        tag: div
+        text: ''
+      normalized_position:
+        x: 0.6431666666666667
+        y: 0.5636930418719212
+      minimum_score: 55
+      minimum_gap: 8
+    fallback_position:
+      x: 0.6431666666666667
+      y: 0.5636930418719212
+  timeout: 10000
+  value: '18877330488'
+- id: step_f9b6f7ca9de4
+  action: click
+  name: 点击 验证码
+  element:
+    id: wel_bbd7ec543efc
+    name: 验证码_3efc
+    tag: input
+    role: textbox
+    text: ''
+    label: 验证码
+    accessible_name: 验证码
+    input_type: text
+    page_url: http://172.16.0.88:9527/home?channelId=JDYFWH&productId=JDYPRD01
+    frame_path: []
+    shadow_hosts: []
+    locators:
+    - strategy: role
+      role: textbox
+      name: 验证码
+      value: 验证码
+    - strategy: label
+      value: 验证码
+    - strategy: placeholder
+      value: 请输入验证码
+    - strategy: id
+      value: van-field-2-input
+    - strategy: name
+      value: password
+    - strategy: css
+      value: '#van-field-2-input'
+      unique: true
+    - strategy: xpath
+      value: //*[@id="van-field-2-input"]
+    fingerprint:
+      version: 1
+      tag: input
+      role: textbox
+      accessible_name: 验证码
+      text: ''
+      attrs:
+        testid: ''
+        id: van-field-2-input
+        name: password
+        placeholder: 请输入验证码
+        type: text
+      control_type: ''
+      keyboard: {}
+      group: {}
+      shadow_hosts: []
+      parent:
+        tag: div
+        text: 点击发送
+      normalized_position:
+        x: 0.5658541666666667
+        y: 0.6311191502463054
+      minimum_score: 55
+      minimum_gap: 8
+    fallback_position:
+      x: 0.5658541666666667
+      y: 0.6311191502463054
+  timeout: 10000
+  wait_after: 0.2
+- id: step_2cd2cb8af295
+  action: fill
+  name: 输入 验证码
+  element:
+    id: wel_bbd7ec543efc
+    name: 验证码_3efc
+    tag: input
+    role: textbox
+    text: ''
+    label: 验证码
+    accessible_name: 验证码
+    input_type: text
+    page_url: http://172.16.0.88:9527/home?channelId=JDYFWH&productId=JDYPRD01
+    frame_path: []
+    shadow_hosts: []
+    locators:
+    - strategy: role
+      role: textbox
+      name: 验证码
+      value: 验证码
+    - strategy: label
+      value: 验证码
+    - strategy: placeholder
+      value: 请输入验证码
+    - strategy: id
+      value: van-field-2-input
+    - strategy: name
+      value: password
+    - strategy: css
+      value: '#van-field-2-input'
+      unique: true
+    - strategy: xpath
+      value: //*[@id="van-field-2-input"]
+    fingerprint:
+      version: 1
+      tag: input
+      role: textbox
+      accessible_name: 验证码
+      text: ''
+      attrs:
+        testid: ''
+        id: van-field-2-input
+        name: password
+        placeholder: 请输入验证码
+        type: text
+      control_type: ''
+      keyboard: {}
+      group: {}
+      shadow_hosts: []
+      parent:
+        tag: div
+        text: 点击发送
+      normalized_position:
+        x: 0.5658541666666667
+        y: 0.6311191502463054
+      minimum_score: 55
+      minimum_gap: 8
+    fallback_position:
+      x: 0.5658541666666667
+      y: 0.6311191502463054
+  timeout: 10000
+  value: '123456'
+- id: step_96521bfcc167
+  action: click
+  name: 点击 车牌号第1位
+  element:
+    id: wel_1b3f783fffaa
+    name: 车牌号第1位_ffaa
+    tag: li
+    role: listitem
+    text: ''
+    label: ''
+    accessible_name: ''
+    input_type: ''
+    page_url: http://172.16.0.88:9527/home?channelId=JDYFWH&productId=JDYPRD01
+    frame_path: []
+    shadow_hosts: []
+    locators:
+    - strategy: group_index
+      group_text: 车牌号
+      role: listitem
+      tag: li
+      index: 0
+      value: 车牌号第1位
+    - strategy: role
+      role: listitem
+      index: 0
+      value: listitem[0]
+    - strategy: css
+      value: '#app div div:nth-of-type(2) div:nth-of-type(2) div:nth-of-type(3) ul li:nth-of-type(1)'
+      unique: true
+    - strategy: xpath
+      value: /html[1]/body[1]/div[1]/div[1]/div[2]/div[2]/div[3]/ul[1]/li[1]
+    fingerprint:
+      version: 1
+      tag: li
+      role: listitem
+      accessible_name: ''
+      text: ''
+      attrs:
+        testid: ''
+        id: ''
+        name: ''
+        placeholder: ''
+        type: ''
+      control_type: plate_input
+      keyboard: {}
+      group:
+        type: plate_input
+        label: 车牌号
+        item_index: 0
+        item_count: 8
+        item_tag: li
+      shadow_hosts: []
+      parent:
+        tag: ul
+        text: • 新能源
+      normalized_position:
+        x: 0.15233333333333332
+        y: 0.7477486145320197
+      minimum_score: 55
+      minimum_gap: 8
+    fallback_position:
+      x: 0.15233333333333332
+      y: 0.7477486145320197
+  timeout: 10000
+  wait_after: 0.2
+- id: step_82e57a62a065
+  action: click
+  name: 点击 车牌键盘按键 浙
+  element:
+    id: wel_4b6b1ffeb213
+    name: 车牌键盘按键 浙_b213
+    tag: div
+    role: ''
+    text: 浙
+    label: ''
+    accessible_name: 浙
+    input_type: ''
+    page_url: http://172.16.0.88:9527/home?channelId=JDYFWH&productId=JDYPRD01
+    frame_path: []
+    shadow_hosts: []
+    locators:
+    - strategy: keyboard_text
+      value: 浙
+      key_kind: character
+    - strategy: text
+      value: 浙
+    - strategy: css
+      value: '#app div div:nth-of-type(7) div:nth-of-type(2) div div:nth-of-type(2) div:nth-of-type(4)'
+      unique: true
+    - strategy: xpath
+      value: /html[1]/body[1]/div[1]/div[1]/div[7]/div[2]/div[1]/div[2]/div[4]
+    fingerprint:
+      version: 1
+      tag: div
+      role: ''
+      accessible_name: 浙
+      text: 浙
+      attrs:
+        testid: ''
+        id: ''
+        name: ''
+        placeholder: ''
+        type: ''
+      control_type: virtual_keyboard_key
+      keyboard:
+        key: 浙
+        kind: character
+      group: {}
+      shadow_hosts: []
+      parent:
+        tag: div
+        text: 皖 鲁 苏 浙 赣 鄂 桂 甘 晋 陕
+      normalized_position:
+        x: 0.36072916666666666
+        y: 0.8295393318965517
+      minimum_score: 55
+      minimum_gap: 8
+    fallback_position:
+      x: 0.36072916666666666
+      y: 0.8295393318965517
+  timeout: 10000
+  wait_after: 0.2
+- id: step_592cdf35178d
+  action: click
+  name: 点击 车牌键盘按键 A
+  element:
+    id: wel_f3f9e1e2b6b7
+    name: 车牌键盘按键 A_b6b7
+    tag: div
+    role: ''
+    text: A
+    label: ''
+    accessible_name: A
+    input_type: ''
+    page_url: http://172.16.0.88:9527/home?channelId=JDYFWH&productId=JDYPRD01
+    frame_path: []
+    shadow_hosts: []
+    locators:
+    - strategy: keyboard_text
+      value: A
+      key_kind: character
+    - strategy: text
+      value: A
+    - strategy: css
+      value: '#app div div:nth-of-type(7) div:nth-of-type(2) div div:nth-of-type(3) div:nth-of-type(1)'
+      unique: true
+    - strategy: xpath
+      value: /html[1]/body[1]/div[1]/div[1]/div[7]/div[2]/div[1]/div[3]/div[1]
+    fingerprint:
+      version: 1
+      tag: div
+      role: ''
+      accessible_name: A
+      text: A
+      attrs:
+        testid: ''
+        id: ''
+        name: ''
+        placeholder: ''
+        type: ''
+      control_type: virtual_keyboard_key
+      keyboard:
+        key: A
+        kind: character
+      group: {}
+      shadow_hosts: []
+      parent:
+        tag: div
+        text: A S D F G H J K L Z
+      normalized_position:
+        x: 0.08229166666666667
+        y: 0.8910964439655172
+      minimum_score: 55
+      minimum_gap: 8
+    fallback_position:
+      x: 0.08229166666666667
+      y: 0.8910964439655172
+  timeout: 10000
+  wait_after: 0.2
+- id: step_7dcbfe858774
+  action: click
+  name: 点击 车牌键盘按键 2
+  element:
+    id: wel_f41efbcff641
+    name: 车牌键盘按键 2_f641
+    tag: div
+    role: ''
+    text: '2'
+    label: ''
+    accessible_name: '2'
+    input_type: ''
+    page_url: http://172.16.0.88:9527/home?channelId=JDYFWH&productId=JDYPRD01
+    frame_path: []
+    shadow_hosts: []
+    locators:
+    - strategy: keyboard_text
+      value: '2'
+      key_kind: character
+    - strategy: text
+      value: '2'
+    - strategy: css
+      value: '#app div div:nth-of-type(7) div:nth-of-type(2) div div:nth-of-type(1) div:nth-of-type(2)'
+      unique: true
+    - strategy: xpath
+      value: /html[1]/body[1]/div[1]/div[1]/div[7]/div[2]/div[1]/div[1]/div[2]
+    fingerprint:
+      version: 1
+      tag: div
+      role: ''
+      accessible_name: '2'
+      text: '2'
+      attrs:
+        testid: ''
+        id: ''
+        name: ''
+        placeholder: ''
+        type: ''
+      control_type: virtual_keyboard_key
+      keyboard:
+        key: '2'
+        kind: character
+      group: {}
+      shadow_hosts: []
+      parent:
+        tag: div
+        text: 1 2 3 4 5 6 7 8 9 0
+      normalized_position:
+        x: 0.17510416666666667
+        y: 0.7679822198275862
+      minimum_score: 55
+      minimum_gap: 8
+    fallback_position:
+      x: 0.17510416666666667
+      y: 0.7679822198275862
+  timeout: 10000
+  wait_after: 0.2
+- id: step_3e53217b87f6
+  action: click
+  name: 点击 车牌键盘按键 4
+  element:
+    id: wel_757347c67823
+    name: 车牌键盘按键 4_7823
+    tag: div
+    role: ''
+    text: '4'
+    label: ''
+    accessible_name: '4'
+    input_type: ''
+    page_url: http://172.16.0.88:9527/home?channelId=JDYFWH&productId=JDYPRD01
+    frame_path: []
+    shadow_hosts: []
+    locators:
+    - strategy: keyboard_text
+      value: '4'
+      key_kind: character
+    - strategy: text
+      value: '4'
+    - strategy: css
+      value: '#app div div:nth-of-type(7) div:nth-of-type(2) div div:nth-of-type(1) div:nth-of-type(4)'
+      unique: true
+    - strategy: xpath
+      value: /html[1]/body[1]/div[1]/div[1]/div[7]/div[2]/div[1]/div[1]/div[4]
+    fingerprint:
+      version: 1
+      tag: div
+      role: ''
+      accessible_name: '4'
+      text: '4'
+      attrs:
+        testid: ''
+        id: ''
+        name: ''
+        placeholder: ''
+        type: ''
+      control_type: virtual_keyboard_key
+      keyboard:
+        key: '4'
+        kind: character
+      group: {}
+      shadow_hosts: []
+      parent:
+        tag: div
+        text: 1 2 3 4 5 6 7 8 9 0
+      normalized_position:
+        x: 0.36072916666666666
+        y: 0.7679822198275862
+      minimum_score: 55
+      minimum_gap: 8
+    fallback_position:
+      x: 0.36072916666666666
+      y: 0.7679822198275862
+  timeout: 10000
+  wait_after: 0.2
+- id: step_0e2df6d5cf0f
+  action: click
+  name: 点击 车牌键盘按键 D
+  element:
+    id: wel_be7e916277d8
+    name: 车牌键盘按键 D_77d8
+    tag: div
+    role: ''
+    text: D
+    label: ''
+    accessible_name: D
+    input_type: ''
+    page_url: http://172.16.0.88:9527/home?channelId=JDYFWH&productId=JDYPRD01
+    frame_path: []
+    shadow_hosts: []
+    locators:
+    - strategy: keyboard_text
+      value: D
+      key_kind: character
+    - strategy: text
+      value: D
+    - strategy: css
+      value: '#app div div:nth-of-type(7) div:nth-of-type(2) div div:nth-of-type(3) div:nth-of-type(3)'
+      unique: true
+    - strategy: xpath
+      value: /html[1]/body[1]/div[1]/div[1]/div[7]/div[2]/div[1]/div[3]/div[3]
+    fingerprint:
+      version: 1
+      tag: div
+      role: ''
+      accessible_name: D
+      text: D
+      attrs:
+        testid: ''
+        id: ''
+        name: ''
+        placeholder: ''
+        type: ''
+      control_type: virtual_keyboard_key
+      keyboard:
+        key: D
+        kind: character
+      group: {}
+      shadow_hosts: []
+      parent:
+        tag: div
+        text: A S D F G H J K L Z
+      normalized_position:
+        x: 0.2679166666666667
+        y: 0.8910964439655172
+      minimum_score: 55
+      minimum_gap: 8
+    fallback_position:
+      x: 0.2679166666666667
+      y: 0.8910964439655172
+  timeout: 10000
+  wait_after: 0.2
+- id: step_5f61ebadc1c6
+  action: click
+  name: 点击 车牌键盘按键 3
+  element:
+    id: wel_507cf46d6969
+    name: 车牌键盘按键 3_6969
+    tag: div
+    role: ''
+    text: '3'
+    label: ''
+    accessible_name: '3'
+    input_type: ''
+    page_url: http://172.16.0.88:9527/home?channelId=JDYFWH&productId=JDYPRD01
+    frame_path: []
+    shadow_hosts: []
+    locators:
+    - strategy: keyboard_text
+      value: '3'
+      key_kind: character
+    - strategy: text
+      value: '3'
+    - strategy: css
+      value: '#app div div:nth-of-type(7) div:nth-of-type(2) div div:nth-of-type(1) div:nth-of-type(3)'
+      unique: true
+    - strategy: xpath
+      value: /html[1]/body[1]/div[1]/div[1]/div[7]/div[2]/div[1]/div[1]/div[3]
+    fingerprint:
+      version: 1
+      tag: div
+      role: ''
+      accessible_name: '3'
+      text: '3'
+      attrs:
+        testid: ''
+        id: ''
+        name: ''
+        placeholder: ''
+        type: ''
+      control_type: virtual_keyboard_key
+      keyboard:
+        key: '3'
+        kind: character
+      group: {}
+      shadow_hosts: []
+      parent:
+        tag: div
+        text: 1 2 3 4 5 6 7 8 9 0
+      normalized_position:
+        x: 0.2679166666666667
+        y: 0.7679822198275862
+      minimum_score: 55
+      minimum_gap: 8
+    fallback_position:
+      x: 0.2679166666666667
+      y: 0.7679822198275862
+  timeout: 10000
+  wait_after: 0.2
+- id: step_caf2c12761b4
+  action: click
+  name: 点击 车牌键盘按键 M
+  element:
+    id: wel_05e6aea85b70
+    name: 车牌键盘按键 M_5b70
+    tag: div
+    role: ''
+    text: M
+    label: ''
+    accessible_name: M
+    input_type: ''
+    page_url: http://172.16.0.88:9527/home?channelId=JDYFWH&productId=JDYPRD01
+    frame_path: []
+    shadow_hosts: []
+    locators:
+    - strategy: keyboard_text
+      value: M
+      key_kind: character
+    - strategy: text
+      value: M
+    - strategy: css
+      value: '#app div div:nth-of-type(7) div:nth-of-type(2) div div:nth-of-type(4) div:nth-of-type(6)'
+      unique: true
+    - strategy: xpath
+      value: /html[1]/body[1]/div[1]/div[1]/div[7]/div[2]/div[1]/div[4]/div[6]
+    fingerprint:
+      version: 1
+      tag: div
+      role: ''
+      accessible_name: M
+      text: M
+      attrs:
+        testid: ''
+        id: ''
+        name: ''
+        placeholder: ''
+        type: ''
+      control_type: virtual_keyboard_key
+      keyboard:
+        key: M
+        kind: character
+      group: {}
+      shadow_hosts: []
+      parent:
+        tag: div
+        text: X C V B N M
+      normalized_position:
+        x: 0.75625
+        y: 0.9526535560344828
+      minimum_score: 55
+      minimum_gap: 8
+    fallback_position:
+      x: 0.75625
+      y: 0.9526535560344828
+  timeout: 10000
+  wait_after: 0.2
+- id: step_61475fe163ac
+  action: double_click
+  name: 双击 车牌键盘按键 确认
+  element:
+    id: wel_21821fdcabb7
+    name: 车牌键盘按键 确认_abb7
+    tag: div
+    role: ''
+    text: 确认
+    label: ''
+    accessible_name: 确认
+    input_type: ''
+    page_url: http://172.16.0.88:9527/home?channelId=JDYFWH&productId=JDYPRD01
+    frame_path: []
+    shadow_hosts: []
+    locators:
+    - strategy: keyboard_text
+      value: 确认
+      key_kind: confirm
+    - strategy: text
+      value: 确认
+    - strategy: css
+      value: '#app div div:nth-of-type(7) div:nth-of-type(1) div:nth-of-type(3)'
+      unique: false
+    - strategy: xpath
+      value: /html[1]/body[1]/div[1]/div[1]/div[7]/div[1]/div[3]
+    fingerprint:
+      version: 1
+      tag: div
+      role: ''
+      accessible_name: 确认
+      text: 确认
+      attrs:
+        testid: ''
+        id: ''
+        name: ''
+        placeholder: ''
+        type: ''
+      control_type: virtual_keyboard_key
+      keyboard:
+        key: 确认
+        kind: confirm
+      group: {}
+      shadow_hosts: []
+      parent:
+        tag: div
+        text: 取消 车牌号键盘 确认
+      normalized_position:
+        x: 0.9243333333333333
+        y: 0.6981411637931034
+      minimum_score: 55
+      minimum_gap: 8
+    fallback_position:
+      x: 0.9243333333333333
+      y: 0.6981411637931034
+  timeout: 10000
+  wait_after: 0.2
+- id: step_4b43a9c57d99
+  action: check
+  name: 勾选 复选框 本人已阅读并同意签署 《个人信息查询及使用授权书》 和 《隐私政策》 《服务许可协议》
+  element:
+    id: wel_f19db9b0faad
+    name: 复选框 本人已阅读并同意签署 《个人信息查询及使用授权书》 和 《隐私政策》 《服务许可协议》_faad
+    tag: div
+    role: checkbox
+    text: 本人已阅读并同意签署 《个人信息查询及使用授权书》 和 《隐私政策》 《服务许可协议》
+    label: ''
+    accessible_name: 本人已阅读并同意签署 《个人信息查询及使用授权书》 和 《隐私政策》 《服务许可协议》
+    input_type: ''
+    page_url: http://172.16.0.88:9527/home?channelId=JDYFWH&productId=JDYPRD01
+    frame_path: []
+    shadow_hosts: []
+    locators:
+    - strategy: role
+      role: checkbox
+      name: 本人已阅读并同意签署 《个人信息查询及使用授权书》 和 《隐私政策》 《服务许可协议》
+      value: 本人已阅读并同意签署 《个人信息查询及使用授权书》 和 《隐私政策》 《服务许可协议》
+    - strategy: css
+      value: '#app div div:nth-of-type(4) div'
+      unique: false
+    - strategy: xpath
+      value: /html[1]/body[1]/div[1]/div[1]/div[4]/div[1]
+    fingerprint:
+      version: 1
+      tag: div
+      role: checkbox
+      accessible_name: 本人已阅读并同意签署 《个人信息查询及使用授权书》 和 《隐私政策》 《服务许可协议》
+      text: 本人已阅读并同意签署 《个人信息查询及使用授权书》 和 《隐私政策》 《服务许可协议》
+      attrs:
+        testid: ''
+        id: ''
+        name: ''
+        placeholder: ''
+        type: ''
+      control_type: checkbox
+      keyboard: {}
+      group: {}
+      shadow_hosts: []
+      parent:
+        tag: div
+        text: 本人已阅读并同意签署 《个人信息查询及使用授权书》 和 《隐私政策》 《服务许可协议》
+      normalized_position:
+        x: 0.5
+        y: 0.9046143780788177
+      minimum_score: 55
+      minimum_gap: 8
+    fallback_position:
+      x: 0.5
+      y: 0.9046143780788177
+  timeout: 10000
+- id: step_2eb1691b4bfb
+  action: click
+  name: 点击 同意并申请
+  element:
+    id: wel_73a029e7a09e
+    name: 同意并申请_a09e
+    tag: button
+    role: button
+    text: 同意并申请
+    label: ''
+    accessible_name: 同意并申请
+    input_type: button
+    page_url: http://172.16.0.88:9527/home?channelId=JDYFWH&productId=JDYPRD01
+    frame_path: []
+    shadow_hosts: []
+    locators:
+    - strategy: role
+      role: button
+      name: 同意并申请
+      value: 同意并申请
+    - strategy: text
+      value: 同意并申请
+    - strategy: css
+      value: '#app div div:nth-of-type(3) button'
+      unique: true
+    - strategy: xpath
+      value: /html[1]/body[1]/div[1]/div[1]/div[3]/button[1]
+    fingerprint:
+      version: 1
+      tag: button
+      role: button
+      accessible_name: 同意并申请
+      text: 同意并申请
+      attrs:
+        testid: ''
+        id: ''
+        name: ''
+        placeholder: ''
+        type: button
+      control_type: ''
+      keyboard: {}
+      group: {}
+      shadow_hosts: []
+      parent:
+        tag: div
+        text: 同意并申请
+      normalized_position:
+        x: 0.5
+        y: 0.8434228756157636
+      minimum_score: 55
+      minimum_gap: 8
+    fallback_position:
+      x: 0.5
+      y: 0.8434228756157636
+  timeout: 10000
+  wait_after: 0.2
+metadata:
+  source: browser_recorder
+  created_at: '2026-08-08 06:11:36'
+  updated_at: '2026-09-01 09:11:28'

