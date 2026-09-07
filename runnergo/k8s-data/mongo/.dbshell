@@ -1,0 +1,6 @@
+var rootUser = 'root';
+var rootPassword = 'root';
+var admin = db.getSiblingDB('admin');
+
+var user = 'runnergo';
+var passwd = 'hello123456';

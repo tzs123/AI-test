@@ -157,7 +157,7 @@ aiServices:
     port: 80
     nodePort: 30999
   testhub-backend:
-    image: runnergo-testhub-backend:local
+    image: host.docker.internal:5001/runnergo-testhub-backend@sha256:b26c763f83a8bacd6174b7bffdef3f0c9e09c448159cd9e315dc4ddaed4ea45e
     port: 8000
     nodePort: 30080
     env:
@@ -193,7 +193,7 @@ aiServices:
       SECURITY_SCAN_ALLOW_PRIVATE_TARGETS: "True"
       TIME_ZONE: Asia/Shanghai
   testhub-celery:
-    image: runnergo-testhub-backend:local
+    image: host.docker.internal:5001/runnergo-testhub-backend@sha256:b26c763f83a8bacd6174b7bffdef3f0c9e09c448159cd9e315dc4ddaed4ea45e
     command: [celery, -A, backend.celery, worker, --loglevel=INFO]
     env:
       DEBUG: "False"
