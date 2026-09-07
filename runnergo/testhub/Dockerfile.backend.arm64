@@ -1,0 +1,90 @@
+FROM python:3.11-slim
+
+ENV PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONUNBUFFERED=1 \
+    PIP_NO_CACHE_DIR=1 \
+    PIP_DISABLE_PIP_VERSION_CHECK=1
+
+WORKDIR /app
+
+RUN sed -i 's|http://deb.debian.org|https://deb.debian.org|g' \
+      /etc/apt/sources.list.d/debian.sources /etc/apt/sources.list 2>/dev/null || true \
+    && printf '%s\n' \
+      'Acquire::Retries "5";' \
+      'Acquire::http::Pipeline-Depth "0";' \
+      'Acquire::http::No-Cache "true";' \
+      > /etc/apt/apt.conf.d/99runnergo-retries \
+    && apt-get update \
+    && apt-get install -y --no-install-recommends \
+      android-tools-adb \
+      antiword \
+      build-essential \
+      curl \
+      default-jre-headless \
+      fonts-dejavu-core \
+      git \
+      libasound2 \
+      libatk-bridge2.0-0 \
+      libatk1.0-0 \
+      libcups2 \
+      libdrm2 \
+      libgbm1 \
+      libglib2.0-0 \
+      libgl1 \
+      libnss3 \
+      libsm6 \
+      libx11-xcb1 \
+      libxcomposite1 \
+      libxcursor1 \
+      libxdamage1 \
+      libxext6 \
+      libxfixes3 \
+      libxi6 \
+      libxkbcommon0 \
+      libxrandr2 \
+      libxrender1 \
+      libxtst6 \
+      libzbar0 \
+      nodejs \
+      npm \
+      tesseract-ocr \
+      tesseract-ocr-chi-sim \
+      chromium \
+    && rm -rf /var/lib/apt/lists/* \
+    && ln -sf /usr/bin/chromium /usr/bin/google-chrome
+
+RUN npm install -g appium@2.19.0 \
+    && appium driver install --source=npm appium-uiautomator2-driver@4.2.9 \
+    && appium driver install --source=npm appium-xcuitest-driver@9.0.0
+
+COPY requirements.txt .
+RUN python -m pip install --upgrade pip setuptools wheel \
+    && pip install -r requirements.txt \
+    && pip install --no-deps airtest==1.4.3 \
+    && sed -i \
+      's/opencv-contrib-python<=4.6.0.66,>=4.4.0.46/opencv-contrib-python<5,>=4.4.0.46/' \
+      /usr/local/lib/python3.11/site-packages/airtest-1.4.3.dist-info/METADATA \
+    && pip check
+
+RUN python -m playwright install ffmpeg
+
+RUN sed -i \
+      "s/return lodash_1.default.includes(/return os_1.default.arch() === 'arm64' \&\& lodash_1.default.includes(/" \
+      /root/.appium/node_modules/appium-uiautomator2-driver/node_modules/appium-chromedriver/build/lib/utils.js \
+    && sed -i \
+      "s/return _.includes(/return os.arch() === 'arm64' \&\& _.includes(/" \
+      /root/.appium/node_modules/appium-uiautomator2-driver/node_modules/appium-chromedriver/lib/utils.js \
+    && grep -q "arch() === 'arm64'" \
+      /root/.appium/node_modules/appium-uiautomator2-driver/node_modules/appium-chromedriver/build/lib/utils.js
+
+ENV ANDROID_HOME=/usr/lib/android-sdk \
+    ANDROID_SDK_ROOT=/usr/lib/android-sdk \
+    E2E_BROWSER_EXECUTABLE_PATH=/usr/bin/google-chrome
+
+COPY . .
+RUN chmod +x /app/docker/entrypoint.sh
+
+EXPOSE 8000
+
+ENTRYPOINT ["/app/docker/entrypoint.sh"]
+CMD ["daphne", "-b", "0.0.0.0", "-p", "8000", "backend.asgi:application"]

@@ -35,9 +35,7 @@ spec:
           mountPath: /root/.ollama
       volumes:
       - name: models
-        hostPath:
-          path: {{ .Values.hostPathRoot }}/ollama/models
-          type: DirectoryOrCreate
+        emptyDir: {}
 ---
 apiVersion: v1
 kind: Service
@@ -122,23 +120,22 @@ spec:
         ports:
         - containerPort: 80
         volumeMounts:
-        - name: testhub-src
+        - name: nginx-conf
           mountPath: /etc/nginx/conf.d/default.conf
           subPath: nginx.conf
           readOnly: true
-        - name: testhub-src
+        - name: nginx-conf
           mountPath: /usr/share/nginx/html/testhub/index.html
           subPath: frontend-index.html
           readOnly: true
-        - name: testhub-src
+        - name: nginx-conf
           mountPath: /usr/share/nginx/html/testhub/module-nav.js
           subPath: module-nav.js
           readOnly: true
       volumes:
-      - name: testhub-src
-        hostPath:
-          path: {{ .Values.hostPathRoot }}/testhub
-          type: Directory
+      - name: nginx-conf
+        configMap:
+          name: runnergo-nginx
 ---
 apiVersion: v1
 kind: Service
@@ -149,10 +146,9 @@ spec:
   selector:
     app: testhub-frontend
   ports:
-  - port: 80
+  - port: 9999
     targetPort: 80
-    nodePort: {{ $tfe.nodePort }}
-  type: NodePort
+  type: LoadBalancer
 ---
 {{/* ===== TestHub Backend (Django/Daphne) ===== */}}
 apiVersion: apps/v1
@@ -186,36 +182,11 @@ spec:
         ports:
         - containerPort: 8000
         volumeMounts:
-        - name: src-backend
-          mountPath: /app/backend
-        - name: src-apps
-          mountPath: /app/apps
         - name: data
           mountPath: /data/testhub
-        - name: media
-          mountPath: /app/media
-        - name: static-files
-          mountPath: /app/static_files
-        - name: logs
-          mountPath: /app/logs
-        - name: tools
-          mountPath: /app/tools
-          readOnly: true
       volumes:
-      - name: src-backend
-        hostPath: { path: {{ .Values.hostPathRoot }}/testhub/backend, type: Directory }
-      - name: src-apps
-        hostPath: { path: {{ .Values.hostPathRoot }}/testhub/apps, type: Directory }
       - name: data
-        hostPath: { path: {{ .Values.hostPathRoot }}/testhub/data, type: DirectoryOrCreate }
-      - name: media
-        hostPath: { path: {{ .Values.hostPathRoot }}/testhub/data/media, type: DirectoryOrCreate }
-      - name: static-files
-        hostPath: { path: {{ .Values.hostPathRoot }}/testhub/static_files, type: Directory }
-      - name: logs
-        hostPath: { path: {{ .Values.hostPathRoot }}/testhub/logs, type: DirectoryOrCreate }
-      - name: tools
-        hostPath: { path: {{ .Values.hostPathRoot }}/tools, type: Directory }
+        emptyDir: {}
 ---
 apiVersion: v1
 kind: Service
@@ -228,8 +199,7 @@ spec:
   ports:
   - port: 8000
     targetPort: 8000
-    nodePort: {{ $tbe.nodePort }}
-  type: NodePort
+  type: LoadBalancer
 ---
 {{/* ===== TestHub Celery Worker ===== */}}
 apiVersion: apps/v1
@@ -261,28 +231,11 @@ spec:
           value: {{ $v | quote }}
         {{- end }}
         volumeMounts:
-        - name: src-backend
-          mountPath: /app/backend
-        - name: src-apps
-          mountPath: /app/apps
         - name: data
           mountPath: /data/testhub
-        - name: logs
-          mountPath: /app/logs
-        - name: tools
-          mountPath: /app/tools
-          readOnly: true
       volumes:
-      - name: src-backend
-        hostPath: { path: {{ .Values.hostPathRoot }}/testhub/backend, type: Directory }
-      - name: src-apps
-        hostPath: { path: {{ .Values.hostPathRoot }}/testhub/apps, type: Directory }
       - name: data
-        hostPath: { path: {{ .Values.hostPathRoot }}/testhub/data, type: DirectoryOrCreate }
-      - name: logs
-        hostPath: { path: {{ .Values.hostPathRoot }}/testhub/logs, type: DirectoryOrCreate }
-      - name: tools
-        hostPath: { path: {{ .Values.hostPathRoot }}/tools, type: Directory }
+        emptyDir: {}
 ---
 {{/* ===== TestHub Skill Runner ===== */}}
 apiVersion: apps/v1
@@ -353,63 +306,11 @@ spec:
         ports:
         - containerPort: 8000
         volumeMounts:
-        - name: src-backend
-          mountPath: /app/backend
-        - name: src-config
-          mountPath: /app/config
-        - name: src-core
-          mountPath: /app/core
-        - name: src-pages
-          mountPath: /app/pages
-        - name: src-templates
-          mountPath: /app/templates
-        - name: src-tests
-          mountPath: /app/tests
-        - name: src-cases
-          mountPath: /app/cases
-        - name: logs
-          mountPath: /app/logs
-        - name: reports
-          mountPath: /app/reports
-        - name: runtime
-          mountPath: /app/runtime
-        - name: screenshots
-          mountPath: /app/screenshots
-        - name: uploads
-          mountPath: /app/uploads
-        - name: tools
-          mountPath: /app/tools
-        - name: testhub-data
+        - name: data
           mountPath: /data/testhub
       volumes:
-      - name: src-backend
-        hostPath: { path: {{ .Values.hostPathRoot }}/auto-test/backend, type: Directory }
-      - name: src-config
-        hostPath: { path: {{ .Values.hostPathRoot }}/auto-test/config, type: Directory }
-      - name: src-core
-        hostPath: { path: {{ .Values.hostPathRoot }}/auto-test/core, type: Directory }
-      - name: src-pages
-        hostPath: { path: {{ .Values.hostPathRoot }}/auto-test/pages, type: Directory }
-      - name: src-templates
-        hostPath: { path: {{ .Values.hostPathRoot }}/auto-test/templates, type: Directory }
-      - name: src-tests
-        hostPath: { path: {{ .Values.hostPathRoot }}/auto-test/tests, type: Directory }
-      - name: src-cases
-        hostPath: { path: {{ .Values.hostPathRoot }}/auto-test/cases, type: Directory }
-      - name: logs
-        hostPath: { path: {{ .Values.hostPathRoot }}/auto-test/logs, type: DirectoryOrCreate }
-      - name: reports
-        hostPath: { path: {{ .Values.hostPathRoot }}/auto-test/reports, type: DirectoryOrCreate }
-      - name: runtime
-        hostPath: { path: {{ .Values.hostPathRoot }}/auto-test/runtime, type: DirectoryOrCreate }
-      - name: screenshots
-        hostPath: { path: {{ .Values.hostPathRoot }}/auto-test/screenshots, type: DirectoryOrCreate }
-      - name: uploads
-        hostPath: { path: {{ .Values.hostPathRoot }}/auto-test/uploads, type: DirectoryOrCreate }
-      - name: tools
-        hostPath: { path: {{ .Values.hostPathRoot }}/tools, type: Directory }
-      - name: testhub-data
-        hostPath: { path: {{ .Values.hostPathRoot }}/testhub/data, type: DirectoryOrCreate }
+      - name: data
+        emptyDir: {}
 ---
 apiVersion: v1
 kind: Service

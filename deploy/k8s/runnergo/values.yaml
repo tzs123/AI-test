@@ -1,7 +1,7 @@
 namespace: runnergo-app
 
-# 宿主机源码在 k3d 节点内的挂载路径（k3d 创建时已映射）
-hostPathRoot: /runnergo
+# 宿主机源码路径（Docker Desktop k8s kind 节点通过文件共享访问）
+hostPathRoot: /Users/tanzsongsen/RunnerGo/runnergo
 
 # config.env 全局环境变量
 configEnv:
@@ -94,35 +94,35 @@ messaging:
     image: registry.cn-beijing.aliyuncs.com/runnergo/kafka:2.13-3.2.1
     port: 9092
 
-# RunnerGo 核心服务（阿里云预构建镜像）
+# RunnerGo 核心服务（阿里云预构建镜像，使用 amd64 digest + Rosetta 2）
 coreServices:
   - name: manage
-    image: registry.cn-beijing.aliyuncs.com/runnergo/manage:releases-v3.0.1
+    image: registry.cn-beijing.aliyuncs.com/runnergo/manage@sha256:2d8c1a9c9a87dc55d22bb0172ab415772c115f5a0ffc78f8928b4309790558b5
     port: 30000
   - name: manage-ws
-    image: registry.cn-beijing.aliyuncs.com/runnergo/manage-ws:releases-v3.0.0
+    image: registry.cn-beijing.aliyuncs.com/runnergo/manage-ws@sha256:3aa7e7f89bbd1244ccff5e48b3708d2f7800bea56ffe06de656041181c48c728
     port: 30000
   - name: engine
-    image: registry.cn-beijing.aliyuncs.com/runnergo/engine:releases-v2.0.6
+    image: registry.cn-beijing.aliyuncs.com/runnergo/engine@sha256:a89e61d64621d0b78e0123355ed1cc7974f15bc2427839d155f43c8c48ff401c
     port: 30000
   - name: collector
-    image: registry.cn-beijing.aliyuncs.com/runnergo/collector:releases-v2.0.1
+    image: registry.cn-beijing.aliyuncs.com/runnergo/collector@sha256:a39f3b4e6c652b1684de0af3fd5981b77cce1f7adc4ddf5c5d6aa263a81d6cc3
     port: 30000
   - name: permission
-    image: registry.cn-beijing.aliyuncs.com/runnergo/permission:releases-v2.0.1
+    image: registry.cn-beijing.aliyuncs.com/runnergo/permission@sha256:ba7defd285e438cd511282480d4cb87850b73571a5c753c1a0c282733ae865dd
     port: 30000
   - name: mock
-    image: registry.cn-beijing.aliyuncs.com/runnergo/mock:releases-v2.0.0
+    image: registry.cn-beijing.aliyuncs.com/runnergo/mock@sha256:0d72e061415b310b01459028a8954843026cc319a2f246865fe29546327330e4
     ports: [30000, 30001, 30003]
   - name: file-server
-    image: registry.cn-beijing.aliyuncs.com/runnergo/file-server:releases-v1.0.1
+    image: registry.cn-beijing.aliyuncs.com/runnergo/file-server@sha256:93a9fe0c3749183411c1fa8dafc2dd036b14ddaa1981d97fe9071522f1ae6b9a
     port: 80
   - name: web-ui
-    image: registry.cn-beijing.aliyuncs.com/runnergo/web-ui:releases-v3.0.1
+    image: registry.cn-beijing.aliyuncs.com/runnergo/web-ui@sha256:f2f22a59aa61719366189ff08a1787ee7b511a67baf3d64c04f6401eeff6db16
     ports: [81, 82]
     nodePort: 30998
   - name: admin-fe
-    image: registry.cn-beijing.aliyuncs.com/runnergo/admin-fe:releases-v2.0.0
+    image: registry.cn-beijing.aliyuncs.com/runnergo/admin-fe@sha256:7a61de2d558a9a6ea0bb9e77398753e64dc00558d390500d12a6514643227a7a
     port: 81
     nodePort: 30998
 

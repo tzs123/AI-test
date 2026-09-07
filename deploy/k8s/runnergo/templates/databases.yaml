@@ -35,13 +35,10 @@ spec:
           mountPath: /var/lib/mysql
       volumes:
       - name: init-sql
-        hostPath:
-          path: {{ .Values.hostPathRoot }}/mysql
-          type: Directory
+        configMap:
+          name: runnergo-init
       - name: data
-        hostPath:
-          path: {{ .Values.hostPathRoot }}/k8s-data/mysql
-          type: DirectoryOrCreate
+        emptyDir: {}
 ---
 apiVersion: v1
 kind: Service
@@ -52,7 +49,8 @@ spec:
   selector:
     app: mysql-db
   ports:
-  - port: 3306
+  - name: mysql
+    port: 3306
     targetPort: 3306
     nodePort: {{ .Values.databases.mysql.nodePort }}
   type: NodePort
@@ -88,9 +86,7 @@ spec:
           mountPath: /data
       volumes:
       - name: data
-        hostPath:
-          path: {{ .Values.hostPathRoot }}/k8s-data/redis
-          type: DirectoryOrCreate
+        emptyDir: {}
 ---
 apiVersion: v1
 kind: Service
@@ -101,7 +97,8 @@ spec:
   selector:
     app: redis-db
   ports:
-  - port: 6379
+  - name: redis
+    port: 6379
     targetPort: 6379
     nodePort: {{ .Values.databases.redis.nodePort }}
   type: NodePort
@@ -143,13 +140,10 @@ spec:
           mountPath: /data/db
       volumes:
       - name: init-script
-        hostPath:
-          path: {{ .Values.hostPathRoot }}/mongo
-          type: Directory
+        configMap:
+          name: runnergo-init
       - name: data
-        hostPath:
-          path: {{ .Values.hostPathRoot }}/k8s-data/mongo
-          type: DirectoryOrCreate
+        emptyDir: {}
 ---
 apiVersion: v1
 kind: Service
@@ -160,7 +154,8 @@ spec:
   selector:
     app: mongo-db
   ports:
-  - port: 27017
+  - name: mongo
+    port: 27017
     targetPort: 27017
     nodePort: {{ .Values.databases.mongo.nodePort }}
   type: NodePort
