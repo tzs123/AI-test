@@ -14,6 +14,7 @@ runnergo/auto-test/uploads/
 runnergo/auto-test/imports/
 runnergo/file-server/data/
 runnergo/static/
+runnergo/k8s-data/
 
 # ===== 二进制补丁 / 编译产物（部署时单独获取）=====
 runnergo/engine-patch/
