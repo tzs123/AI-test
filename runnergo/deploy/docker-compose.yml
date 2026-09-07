@@ -16,6 +16,8 @@ services:
     image: grafana/grafana:latest
     restart: unless-stopped
     environment:
+      GF_SERVER_ROOT_URL: http://localhost:9999/grafana/
+      GF_SERVER_SERVE_FROM_SUB_PATH: "true"
       GF_RENDERING_SERVER_URL: http://grafana-image-renderer:8081/render
       GF_RENDERING_CALLBACK_URL: http://grafana:3000/
       GF_RENDERING_RENDERER_TOKEN: runnergo-local-renderer-token
