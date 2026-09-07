@@ -1,9 +1,6 @@
 services:
   agent-engine:
-    platform: linux/amd64
-    build:
-      context: ./backend
-      dockerfile: Dockerfile
+
     image: runnergo-agent-engine:local
     restart: unless-stopped
     environment:

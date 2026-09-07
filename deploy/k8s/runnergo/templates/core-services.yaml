@@ -61,6 +61,6 @@ spec:
   {{- end }}
   {{- end }}
   {{- if $svc.nodePort }}
-  type: NodePort
+  type: LoadBalancer
   {{- end }}
 {{- end }}
