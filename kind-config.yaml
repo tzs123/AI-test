@@ -1,0 +1,39 @@
+kind: Cluster
+apiVersion: kind.x-k8s.io/v1alpha4
+name: runnergo
+networking:
+  ipFamily: ipv4
+nodes:
+- role: control-plane
+  extraPortMappings:
+  - containerPort: 30999
+    hostPort: 9999
+    protocol: TCP
+  - containerPort: 30080
+    hostPort: 8000
+    protocol: TCP
+  - containerPort: 30307
+    hostPort: 3307
+    protocol: TCP
+  - containerPort: 30380
+    hostPort: 6380
+    protocol: TCP
+  - containerPort: 30018
+    hostPort: 27018
+    protocol: TCP
+  - containerPort: 30090
+    hostPort: 9090
+    protocol: TCP
+  - containerPort: 30000
+    hostPort: 3000
+    protocol: TCP
+  - containerPort: 30908
+    hostPort: 58908
+    protocol: TCP
+  extraMounts:
+  - hostPath: /Users/tanzsongsen/RunnerGo/runnergo
+    containerPath: /runnergo
+containerdConfigPatches:
+- |-
+  [plugins."io.containerd.grpc.v1.cri".registry.mirrors."registry.cn-beijing.aliyuncs.com"]
+    endpoint = ["https://registry.cn-beijing.aliyuncs.com"]

@@ -1,0 +1,246 @@
+namespace: runnergo-app
+
+# 宿主机源码在 k3d 节点内的挂载路径（k3d 创建时已映射）
+hostPathRoot: /runnergo
+
+# config.env 全局环境变量
+configEnv:
+  MYSQL_ROOT_PASSWORD: "123456"
+  MYSQL_DATABASE: runnergo
+  REDIS_PASSWD: mypassword
+  MONGO_INITDB_ROOT_USERNAME: root
+  MONGO_INITDB_ROOT_PASSWORD: root
+  MONGO_INITDB_DATABASE: runnergo
+  MONGO_INITDB_USERNAME: runnergo
+  MONGO_INITDB_PASSWORD: hello123456
+  MAX_RUNNER_CONCURRENCY: "1000"
+  RG_FILE_SERVER_PORT: "80"
+  RG_MONGO_DSN: mongodb://runnergo:hello123456@mongo-db:27017/runnergo
+  RG_MONGO_DATABASE: runnergo
+  RG_MONGO_PASSWORD: hello123456
+  RG_REDIS_ADDRESS: redis-db:6379
+  RG_REDIS_PASSWORD: mypassword
+  RG_REDIS_DB: "0"
+  RG_KAFKA_TOPIC: report
+  RG_KAFKA_ADDRESS: kafka:9092
+  RG_KAFKA_PORT: "9092"
+  RG_KAFKA_NUM: "2"
+  RG_MANAGEMENT_NOTIFY_STOP_STRESS: http://manage:30000/management/api/v1/plan/notify_stop_stress
+  RG_MANAGEMENT_NOTIFY_RUN_FINISH: http://manage:30000/management/api/v1/auto_plan/notify_run_finish
+  RG_DOMAIN: ""
+  RG_MYSQL_HOST: mysql-db
+  RG_MYSQL_USERNAME: root
+  RG_MYSQL_PASSWORD: "123456"
+  RG_MYSQL_DBNAME: runnergo
+  RG_JWT_ISSUER: asfdasfasdfasfd
+  RG_JWT_SECRET: sdfaswerwrwerwerwer
+  RG_REDIS_REPORT_ADDRESS: redis-db:6379
+  RG_CAN_USE_PARTITION_TOTAL_NUM: "2"
+  RG_ONE_MACHINE_CAN_CONCURRENCE_NUM: "5000"
+  RG_MACHINE_MAX_GOROUTINES: "20005"
+  KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181/kafka
+  KAFKA_LISTENERS: PLAINTEXT://:9092
+  KAFKA_BROKER_ID: "0"
+  KAFKA_CREATE_TOPICS: report:2:1
+  RG_INVITE_DATA_AES_SECRET_KEY: qazwsxedcrfvtgby
+  RG_MACHINE_ALIVE_TIME: "10"
+  RG_INIT_PARTITION_TOTAL_NUM: "2"
+  RG_CPU_TOP_LIMIT: "80"
+  RG_MEMORY_TOP_LIMIT: "80"
+  RG_DISK_TOP_LIMIT: "70"
+  RG_DEFAULT_TOKEN_EXPIRE_TIME: "24"
+  RG_KEEP_STRESS_DEBUG_LOG_TIME: "1"
+  RG_CLIENTS_MANAGER_DOMAIN: http://manage:30000
+  RG_CLIENTS_ENGINE_DOMAIN: http://engine:30000
+  RG_CLIENTS_PERMISSION_DOMAIN: http://permission:30000
+  RG_CLIENTS_MOCK_API_MANAGER_GRPC_DOMAIN: mock:30000
+  RG_CLIENTS_MOCK_HTTP_SERVER: http://mock:30003
+  RG_KEEP_MACHINE_MONITOR_DATA_TIME: "3"
+  RG_COMPANY_ACCOUNT: runnergo
+  RG_COMPANY_PASSWORD: runnergo
+  RG_COMPANY_NAME: runnergo
+  RG_COMPANY_OPERATION_LOG_TIME: "7"
+  RG_MOCK_LOG_PRETTY: "true"
+  RG_MOCK_LOG_LEVEL: debug
+  RG_MOCK_PLUGIN_REDIS_ENABLE: "true"
+  RG_MOCK_PLUGIN_REDIS_PREFIX: /mock/
+  RG_MOCK_PLUGIN_REDIS_DB: "14"
+  RG_STATIC: ./data/static/
+
+# 数据库
+databases:
+  mysql:
+    image: registry.cn-beijing.aliyuncs.com/runnergo/mysql:5.7.40.v1
+    port: 3306
+    nodePort: 30307
+    storage: 5Gi
+  redis:
+    image: registry.cn-beijing.aliyuncs.com/runnergo/redis:6.2.7
+    port: 6379
+    nodePort: 30380
+    password: mypassword
+  mongo:
+    image: registry.cn-beijing.aliyuncs.com/runnergo/mongo:4.4
+    port: 27017
+    nodePort: 30018
+    storage: 5Gi
+
+# 消息队列
+messaging:
+  zookeeper:
+    image: registry.cn-beijing.aliyuncs.com/runnergo/zookeeper:latest
+    port: 2181
+  kafka:
+    image: registry.cn-beijing.aliyuncs.com/runnergo/kafka:2.13-3.2.1
+    port: 9092
+
+# RunnerGo 核心服务（阿里云预构建镜像）
+coreServices:
+  - name: manage
+    image: registry.cn-beijing.aliyuncs.com/runnergo/manage:releases-v3.0.1
+    port: 30000
+  - name: manage-ws
+    image: registry.cn-beijing.aliyuncs.com/runnergo/manage-ws:releases-v3.0.0
+    port: 30000
+  - name: engine
+    image: registry.cn-beijing.aliyuncs.com/runnergo/engine:releases-v2.0.6
+    port: 30000
+  - name: collector
+    image: registry.cn-beijing.aliyuncs.com/runnergo/collector:releases-v2.0.1
+    port: 30000
+  - name: permission
+    image: registry.cn-beijing.aliyuncs.com/runnergo/permission:releases-v2.0.1
+    port: 30000
+  - name: mock
+    image: registry.cn-beijing.aliyuncs.com/runnergo/mock:releases-v2.0.0
+    ports: [30000, 30001, 30003]
+  - name: file-server
+    image: registry.cn-beijing.aliyuncs.com/runnergo/file-server:releases-v1.0.1
+    port: 80
+  - name: web-ui
+    image: registry.cn-beijing.aliyuncs.com/runnergo/web-ui:releases-v3.0.1
+    ports: [81, 82]
+    nodePort: 30998
+  - name: admin-fe
+    image: registry.cn-beijing.aliyuncs.com/runnergo/admin-fe:releases-v2.0.0
+    port: 81
+    nodePort: 30998
+
+# AI / TestHub 服务（本地构建镜像，需 k3d image import）
+aiServices:
+  agent-engine:
+    image: runnergo-agent-engine:local
+    port: 8088
+    nodePort: 30888
+    env:
+      RUNNERGO_AGENT_PORT: "8088"
+      RUNNERGO_AGENT_AUTH_REQUIRED: "true"
+      RUNNERGO_AGENT_AUTH_VERIFY_URL: http://testhub-backend:8000/api/users/me/
+      RUNNERGO_REDIS_ADDR: redis-db:6379
+      RUNNERGO_REDIS_PASSWORD: mypassword
+      RUNNERGO_AGENT_QUEUE_PREFIX: runnergo:agent
+      RUNNERGO_LLM_PROVIDER: local
+      RUNNERGO_LLM_MODEL: qwen3:8b
+      RUNNERGO_LLM_BASE_URL: http://ollama:11434
+      RUNNERGO_AGENT_TIMEOUT: 600s
+      RUNNERGO_AGENT_RETRIES: "2"
+      RUNNERGO_AGENT_RETRY_BACKOFF: 100ms
+      RUNNERGO_AGENT_PARALLEL: "2"
+      RUNNERGO_MYSQL_DSN: root:123456@tcp(mysql-db:3306)/runnergo?charset=utf8mb4&parseTime=True&loc=Local
+  ollama:
+    image: ollama/ollama:latest
+    port: 11434
+    nodePort: 30908
+    storage: 10Gi
+  testhub-frontend:
+    image: runnergo-testhub-frontend:local
+    port: 80
+    nodePort: 30999
+  testhub-backend:
+    image: runnergo-testhub-backend:local
+    port: 8000
+    nodePort: 30080
+    env:
+      DEBUG: "False"
+      SECRET_KEY: runnergo-testhub-local-secret-key-change-me
+      DB_ENGINE: sqlite
+      SQLITE_DATABASE_PATH: /data/testhub/db.sqlite3
+      SQLITE_BUSY_TIMEOUT_SECONDS: "60"
+      REDIS_URL: redis://:mypassword@redis-db:6379/1
+      APP_PUBLIC_BASE_URL: http://localhost:9999
+      ALLOWED_HOSTS: localhost,127.0.0.1,testhub-backend,web-ui
+      CORS_ALLOWED_ORIGINS: http://localhost:9999,http://127.0.0.1:9999
+      CSRF_TRUSTED_ORIGINS: http://localhost:9999,http://127.0.0.1:9999
+      APP_USE_HTTPS: "False"
+      SECURE_SSL_REDIRECT: "False"
+      SESSION_COOKIE_SECURE: "False"
+      CSRF_COOKIE_SECURE: "False"
+      CSRF_COOKIE_HTTPONLY: "True"
+      SKILL_RUNNER_URL: http://testhub-skill-runner:8080
+      SKILL_RUNNER_TOKEN: runnergo-local-skill-token
+      TEST_DATA_CENTER_AGENT_TOKEN: runnergo-local-agent-token
+      TESTHUB_ACCESS_TOKEN_LIFETIME_DAYS: "3650"
+      TESTHUB_REFRESH_TOKEN_LIFETIME_DAYS: "3650"
+      AI_SSE_TOKEN_MAX_AGE_SECONDS: "315360000"
+      RUNNERGO_MANAGEMENT_API_URL: http://manage:30000/management/api/v1
+      AUTO_TEST_AGENT_API_URL: http://auto-test:8000
+      RUNNERGO_MYSQL_HOST: mysql-db
+      RUNNERGO_MYSQL_PORT: "3306"
+      RUNNERGO_MYSQL_USER: root
+      RUNNERGO_MYSQL_PASSWORD: "123456"
+      RUNNERGO_MYSQL_DATABASE: runnergo
+      AI_OUTBOUND_ALLOWED_HOSTS: ollama
+      SECURITY_SCAN_ALLOW_PRIVATE_TARGETS: "True"
+      TIME_ZONE: Asia/Shanghai
+  testhub-celery:
+    image: runnergo-testhub-backend:local
+    command: [celery, -A, backend.celery, worker, --loglevel=INFO]
+    env:
+      DEBUG: "False"
+      SECRET_KEY: runnergo-testhub-local-secret-key-change-me
+      DB_ENGINE: sqlite
+      SQLITE_DATABASE_PATH: /data/testhub/db.sqlite3
+      REDIS_URL: redis://:mypassword@redis-db:6379/1
+      ALLOWED_HOSTS: localhost,127.0.0.1,testhub-backend
+      APP_USE_HTTPS: "False"
+      SECURE_SSL_REDIRECT: "False"
+      SESSION_COOKIE_SECURE: "False"
+      CSRF_COOKIE_SECURE: "False"
+      SKILL_RUNNER_URL: http://testhub-skill-runner:8080
+      AUTO_TEST_AGENT_API_URL: http://auto-test:8000
+      TEST_DATA_CENTER_AGENT_TOKEN: runnergo-local-agent-token
+      TIME_ZONE: Asia/Shanghai
+      RUNNERGO_MYSQL_HOST: mysql-db
+      RUNNERGO_MYSQL_PORT: "3306"
+      RUNNERGO_MYSQL_USER: root
+      RUNNERGO_MYSQL_PASSWORD: "123456"
+      RUNNERGO_MYSQL_DATABASE: runnergo
+  testhub-skill-runner:
+    image: runnergo-testhub-skill-runner:local
+    port: 8080
+  auto-test:
+    image: runnergo-auto-test:local
+    port: 8000
+    env:
+      TEST_DATA_CENTER_API_URL: http://testhub-backend:8000
+      TEST_DATA_ASSETS_DB_PATH: /data/testhub/db.sqlite3
+      TESTHUB_MEDIA_ROOT: /data/testhub/media
+      AI_AGENT_BASE_URL: http://ollama:11434/v1
+      AI_AGENT_MODEL: qwen3:8b
+      AI_AGENT_API_KEY: ollama
+      RUNNERGO_MANAGEMENT_API_URL: http://manage:30000/management/api/v1
+      RUNNERGO_MYSQL_HOST: mysql-db
+      RUNNERGO_MYSQL_PORT: "3306"
+      RUNNERGO_MYSQL_USER: root
+      RUNNERGO_MYSQL_PASSWORD: "123456"
+      RUNNERGO_MYSQL_DATABASE: runnergo
+      RUNNERGO_PERMISSION_USER_URL: http://permission:30000/permission/api/v1/user/get
+      AUTO_TEST_ENFORCE_VUM_QUOTA: "false"
+      AUTO_TEST_ALLOWED_URL_CIDRS: 172.16.0.88/32
+      AUTO_TEST_ALLOWED_URL_HOSTS: prometheus,mysqld-exporter,jmx-exporter
+      TEST_DATA_CENTER_AGENT_TOKEN: runnergo-local-agent-token
+      AUTO_TEST_AUTH_REQUIRED: "true"
+      AUTO_TEST_CORS_ALLOWED_ORIGINS: http://localhost:9999,http://127.0.0.1:9999
+      ALLURE_CLI: /app/tools/allure-2.27.0/bin/allure
+      AUTO_TEST_WORKER_AUTO_START: "true"
+      AUTO_TEST_WORKER_COUNT: "1"

@@ -1,0 +1,6 @@
+apiVersion: v2
+name: runnergo
+description: RunnerGo full-stack test platform Helm chart for local k8s (k3d)
+type: application
+version: 1.0.0
+appVersion: "3.0.1"

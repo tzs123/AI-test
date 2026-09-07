@@ -1,0 +1,66 @@
+{{/* ===== RunnerGo 核心服务（阿里云预构建镜像，range 循环） ===== */}}
+{{- range $svc := .Values.coreServices }}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ $svc.name }}
+  namespace: {{ $.Values.namespace }}
+  labels:
+    app: {{ $svc.name }}
+    {{- include "runnergo.labels" $ | nindent 4 }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: {{ $svc.name }}
+  template:
+    metadata:
+      labels:
+        app: {{ $svc.name }}
+    spec:
+      containers:
+      - name: {{ $svc.name }}
+        image: {{ $svc.image }}
+        envFrom:
+        - configMapRef:
+            name: runnergo-config
+        {{- if $svc.port }}
+        ports:
+        - containerPort: {{ $svc.port }}
+        {{- end }}
+        {{- if $svc.ports }}
+        ports:
+        {{- range $p := $svc.ports }}
+        - containerPort: {{ $p }}
+        {{- end }}
+        {{- end }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ $svc.name }}
+  namespace: {{ $.Values.namespace }}
+spec:
+  selector:
+    app: {{ $svc.name }}
+  ports:
+  {{- if $svc.port }}
+  - name: main
+    port: {{ $svc.port }}
+    targetPort: {{ $svc.port }}
+    {{- if $svc.nodePort }}
+    nodePort: {{ $svc.nodePort }}
+    {{- end }}
+  {{- end }}
+  {{- if $svc.ports }}
+  {{- range $idx, $p := $svc.ports }}
+  - name: port-{{ $idx }}
+    port: {{ $p }}
+    targetPort: {{ $p }}
+  {{- end }}
+  {{- end }}
+  {{- if $svc.nodePort }}
+  type: NodePort
+  {{- end }}
+{{- end }}

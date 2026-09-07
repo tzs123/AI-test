@@ -1,0 +1,166 @@
+{{/* ===== MySQL ===== */}}
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: mysql-db
+  namespace: {{ .Values.namespace }}
+  labels:
+    app: mysql-db
+    {{- include "runnergo.labels" . | nindent 4 }}
+spec:
+  serviceName: mysql-db
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mysql-db
+  template:
+    metadata:
+      labels:
+        app: mysql-db
+    spec:
+      containers:
+      - name: mysql
+        image: {{ .Values.databases.mysql.image }}
+        envFrom:
+        - configMapRef:
+            name: runnergo-config
+        ports:
+        - containerPort: 3306
+        volumeMounts:
+        - name: init-sql
+          mountPath: /docker-entrypoint-initdb.d/mysql.sql
+          subPath: mysql.sql
+          readOnly: true
+        - name: data
+          mountPath: /var/lib/mysql
+      volumes:
+      - name: init-sql
+        hostPath:
+          path: {{ .Values.hostPathRoot }}/mysql
+          type: Directory
+      - name: data
+        hostPath:
+          path: {{ .Values.hostPathRoot }}/k8s-data/mysql
+          type: DirectoryOrCreate
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mysql-db
+  namespace: {{ .Values.namespace }}
+spec:
+  selector:
+    app: mysql-db
+  ports:
+  - port: 3306
+    targetPort: 3306
+    nodePort: {{ .Values.databases.mysql.nodePort }}
+  type: NodePort
+---
+{{/* ===== Redis ===== */}}
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: redis-db
+  namespace: {{ .Values.namespace }}
+  labels:
+    app: redis-db
+    {{- include "runnergo.labels" . | nindent 4 }}
+spec:
+  serviceName: redis-db
+  replicas: 1
+  selector:
+    matchLabels:
+      app: redis-db
+  template:
+    metadata:
+      labels:
+        app: redis-db
+    spec:
+      containers:
+      - name: redis
+        image: {{ .Values.databases.redis.image }}
+        command: ["redis-server", "--requirepass", {{ .Values.databases.redis.password | quote }}]
+        ports:
+        - containerPort: 6379
+        volumeMounts:
+        - name: data
+          mountPath: /data
+      volumes:
+      - name: data
+        hostPath:
+          path: {{ .Values.hostPathRoot }}/k8s-data/redis
+          type: DirectoryOrCreate
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: redis-db
+  namespace: {{ .Values.namespace }}
+spec:
+  selector:
+    app: redis-db
+  ports:
+  - port: 6379
+    targetPort: 6379
+    nodePort: {{ .Values.databases.redis.nodePort }}
+  type: NodePort
+---
+{{/* ===== MongoDB ===== */}}
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: mongo-db
+  namespace: {{ .Values.namespace }}
+  labels:
+    app: mongo-db
+    {{- include "runnergo.labels" . | nindent 4 }}
+spec:
+  serviceName: mongo-db
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mongo-db
+  template:
+    metadata:
+      labels:
+        app: mongo-db
+    spec:
+      containers:
+      - name: mongo
+        image: {{ .Values.databases.mongo.image }}
+        envFrom:
+        - configMapRef:
+            name: runnergo-config
+        ports:
+        - containerPort: 27017
+        volumeMounts:
+        - name: init-script
+          mountPath: /docker-entrypoint-initdb.d/init-mongo.sh
+          subPath: init-mongo.sh
+          readOnly: true
+        - name: data
+          mountPath: /data/db
+      volumes:
+      - name: init-script
+        hostPath:
+          path: {{ .Values.hostPathRoot }}/mongo
+          type: Directory
+      - name: data
+        hostPath:
+          path: {{ .Values.hostPathRoot }}/k8s-data/mongo
+          type: DirectoryOrCreate
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mongo-db
+  namespace: {{ .Values.namespace }}
+spec:
+  selector:
+    app: mongo-db
+  ports:
+  - port: 27017
+    targetPort: 27017
+    nodePort: {{ .Values.databases.mongo.nodePort }}
+  type: NodePort
