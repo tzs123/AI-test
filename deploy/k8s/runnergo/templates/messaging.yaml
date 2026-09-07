@@ -1,45 +1,12 @@
-{{/* ===== ZooKeeper ===== */}}
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: zookeeper
-  namespace: {{ .Values.namespace }}
-  labels:
-    app: zookeeper
-    {{- include "runnergo.labels" . | nindent 4 }}
-spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app: zookeeper
-  template:
-    metadata:
-      labels:
-        app: zookeeper
-    spec:
-      containers:
-      - name: zookeeper
-        image: {{ .Values.messaging.zookeeper.image }}
-        ports:
-        - containerPort: 2181
-        env:
-        - name: SERVER_JVMFLAGS
-          value: "-Xmx512m -Xms256m"
-        - name: ZK_SERVER_HEAP_SIZE
-          value: "512"
-
----
+{{/* ===== ZooKeeper (运行在 Docker，非 K8s，避免 Rosetta OOM) ===== */}}
 apiVersion: v1
 kind: Service
 metadata:
   name: zookeeper
   namespace: {{ .Values.namespace }}
 spec:
-  selector:
-    app: zookeeper
-  ports:
-  - port: 2181
-    targetPort: 2181
+  type: ExternalName
+  externalName: host.docker.internal
 ---
 {{/* ===== Kafka ===== */}}
 apiVersion: apps/v1
